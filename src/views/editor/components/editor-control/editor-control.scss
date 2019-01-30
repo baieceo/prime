@@ -1,7 +1,7 @@
 @import '@/scss/utilities/_scroll.scss';
 
 .editor-control {
-  width: 300px;
+  width: 350px;
   height: 100%;
   font-size: 14px;
 }
@@ -74,6 +74,8 @@
 
       .el-icon-question {
         color: #dcdfe6;
+        font-size: 18px;
+        margin-top: 4px;
         margin-left: 5px;
         cursor: pointer;
       }
