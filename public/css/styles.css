@@ -1,0 +1,35 @@
+/* 针对缺省样式 (必须的) */
+html::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+
+/* 滚动条的滑轨背景颜色 */
+html::-webkit-scrollbar-track {
+  width: 0;
+  display: none;
+}
+
+/* 滑块颜色 */
+html::-webkit-scrollbar-thumb {
+  width: 0;
+  display: none;
+}
+
+/*内层轨道的颜色*/
+html::-webkit-scrollbar-track-piece {
+  width: 0;
+  display: none;
+}
+
+/* 滑轨两头的监听按钮颜色 */
+html::-webkit-scrollbar-button {
+  width: 0;
+  display: none;
+}
+
+/* 横向滚动条和纵向滚动条相交处尖角的颜色 */
+html::-webkit-scrollbar-corner {
+  width: 0;
+  display: none;
+}
