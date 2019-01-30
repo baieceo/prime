@@ -43,7 +43,8 @@
 
       &-moveup,
       &-movedown,
-      &-remove {
+      &-remove,
+      &-setting {
         display: inline-block;
         color: #fff;
         font-size: 14px;
@@ -70,6 +71,12 @@
   const html = `
     <div class="i-component-container">
       <div class="i-component-container-operation">
+        <a
+          href="javascript:;"
+          class="i-component-container-setting el-icon-setting"
+          title="设置"
+          @click="handleSetting"
+        ></a>
         <a
           href="javascript:;"
           class="i-component-container-moveup el-icon-sort-up"
@@ -126,6 +133,17 @@
         window.parent.postMessage(
           {
             cmd: 'removeComponentById',
+            params: {
+              id: this.id
+            }
+          },
+          '*'
+        )
+      },
+      handleSetting (ev) {
+        window.parent.postMessage(
+          {
+            cmd: 'settingComponentById',
             params: {
               id: this.id
             }

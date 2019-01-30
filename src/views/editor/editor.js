@@ -164,8 +164,15 @@ export default {
           break
         case 'removeComponentById':
           // 移除组件
-          this.removeComponentById(event.data.params.id)
-
+          this.$confirm('是否移除该组件?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          })
+            .then(() => {
+              this.removeComponentById(event.data.params.id)
+            })
+            .catch(() => {})
           break
         default:
           break
