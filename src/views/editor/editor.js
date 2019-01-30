@@ -3,6 +3,7 @@ import Vue from 'vue'
 import randomStr from '@/utils/random_str.js'
 import defaultCode from './default-code.js'
 import navMenu from './components/nav-menu'
+import editorControl from './components/editor-control'
 
 // require component
 import { codemirror } from 'vue-codemirror'
@@ -14,14 +15,12 @@ import 'codemirror/mode/javascript/javascript'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/eclipse.css'
 
-import unitComponent from '@/components/products/unit-component.vue'
-
 export default {
   name: 'Editor',
   components: {
     codemirror,
     navMenu,
-    unitComponent
+    editorControl
   },
   data () {
     let devices = [

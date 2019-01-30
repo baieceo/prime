@@ -7,8 +7,19 @@
     </div>
     <div class="editor-layout-main">
       <div class="editor-layout-topbar">
-        <el-row justify="space-between">
-          <el-col :span="20">
+        <el-row
+          type="flex"
+          align="middle"
+          justify="space-between"
+        >
+          <el-col
+            :span="20"
+            style="display: flex; align-items: center;"
+          >
+            <i
+              class="el-icon-prime-iPhoneXXS"
+              style="margin-right: 10px; font-size: 28px; color: #dcdfe6;"
+            ></i>
             <el-select
               v-model="device"
               value-key="name"
@@ -23,42 +34,49 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :span="4">
+          <el-col
+            :span="4"
+            style="text-align: right;"
+          >
             <el-button
               type="primary"
+              icon="el-icon-prime-code4"
               @click="handleOpenCodeEditor"
-            >编辑代码</el-button>
+            >源码</el-button>
           </el-col>
         </el-row>
 
       </div>
 
-      <div class="editor-layout-stage">
-        <div
-          class="editor-wrapper"
-          :style="{ width: `${device.width}px`, height: `${device.height}px` }"
-        >
-          <div class="editor-phone"></div>
-          <div class="editor-stage">
-            <iframe
-              frameborder="0"
-              name="stage"
-              scrolling="auto"
-              ref="visualDevice"
-              :src="visualDeviceSrc"
-              :width="device.width"
-              :height="device.height"
-            />
-            <!-- <i-display
+      <div class="editor-layout-body">
+        <div class="editor-layout-stage">
+          <div
+            class="editor-wrapper"
+            :style="{ width: `${device.width}px`, height: `${device.height}px` }"
+          >
+            <div class="editor-phone"></div>
+            <div class="editor-stage">
+              <iframe
+                frameborder="0"
+                name="stage"
+                scrolling="auto"
+                ref="visualDevice"
+                :src="visualDeviceSrc"
+                :width="device.width"
+                :height="device.height"
+              />
+              <!-- <i-display
               ref="display"
               :code="code"
             /> -->
+            </div>
+
           </div>
-
         </div>
-
+        <div class="editor-layout-control">
+          <editor-control></editor-control>
+        </div>
       </div>
-
     </div>
 
     <el-dialog
