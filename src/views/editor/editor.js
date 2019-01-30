@@ -181,6 +181,11 @@ export default {
     handleClose () {
       this.dialogVisible = false
     },
+    handleOpenCodeEditor () {
+      this.codeEditorValue = this.code
+
+      this.dialogVisible = true
+    },
     onCmReady (/* cm */) {},
     onCmFocus (/* cm */) {},
     onCmCodeChange (newCode) {

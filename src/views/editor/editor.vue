@@ -26,7 +26,7 @@
           <el-col :span="4">
             <el-button
               type="primary"
-              @click="dialogVisible = true"
+              @click="handleOpenCodeEditor"
             >编辑代码</el-button>
           </el-col>
         </el-row>
