@@ -44,25 +44,20 @@
               name: '交互组件'
             },
             // 数据载体
-            payloadData: {}
-          }
-        },
-        methods: {
-          getSettings () {
-            return [
+            payloadData: {},
+            props: [
               {
                 label: '数据设置',
-                key: 'dataSetting',
+                key: 'data',
                 value: [
                   {
                     label: '商品接口', // 属性标签
-                    key: 'size', // 属性 key
+                    key: 'api', // 属性 key
                     type: 'input', // 属性输入类型
                     desc: '商品列表请求接口', // 属性说明
                     value: '', // 属性值
                     default:
-                      'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs#!method=get', // 属性默认值
-                    schema: null
+                      'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs#!method=get' // 属性默认值
                   }
                 ]
               },
@@ -80,6 +75,11 @@
                 ]
               }
             ]
+          }
+        },
+        methods: {
+          getSettings () {
+            return false
           },
           // 用户操作回调函数
           userOperationCallback (payload) {
@@ -103,9 +103,7 @@
             }
           }
         },
-        mounted () {
-          this.$emit('init', this.getSettings())
-        }
+        mounted () {}
       })
     })
 })()

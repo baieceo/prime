@@ -315,7 +315,6 @@ export default {
     // 设置组件
     settingComponentById (id, settings) {
       this.settings = settings
-      // alert(id)
     },
     handleCodeChange () {
       this.dialogVisible = false

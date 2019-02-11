@@ -146,7 +146,7 @@
             cmd: 'settingComponentById',
             params: {
               id: this.id,
-              settings: this.$children[0].getSettings() || []
+              settings: this.$children[0].props || []
             }
           },
           '*'

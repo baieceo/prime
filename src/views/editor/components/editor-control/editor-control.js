@@ -19,5 +19,13 @@ export default {
       },
       deep: true
     }
+  },
+  methods: {
+    getControlItemValue (control) {
+      return control.value || control.default
+    },
+    handleControlItemChange (ev, control) {
+      control.value = ev.target.value
+    }
   }
 }

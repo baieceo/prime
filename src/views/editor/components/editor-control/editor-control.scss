@@ -5,9 +5,14 @@
   width: 350px;
   height: 100%;
   font-size: 14px;
+  transition: 0.3s width ease;
 
   &-closed {
     width: 0;
+  }
+
+  &-wrapper {
+    height: 100%;
   }
 
   &-trigger {
@@ -30,7 +35,7 @@
     transition: 0.3s opacity ease;
 
     .el-icon {
-      transition: 0.3s transform ease;
+      transition: 2s all ease;
     }
 
     &:hover {
@@ -42,7 +47,8 @@
 
     &__collapsed {
       .el-icon {
-        transform: rotate(180deg);
+        // transform: rotate(360deg) scale(1.2);
+        transform: rotate(360deg);
       }
     }
   }
@@ -51,6 +57,7 @@
 /deep/ .editor-control-tabs {
   display: flex;
   flex-direction: column;
+  width: 350px;
   height: 100%;
 
   .el-tabs__content {
