@@ -3,13 +3,19 @@
 <template>
   <div
     class="editor-control"
+    :class="{ 'editor-control-closed': !collapsed }"
     v-if="settings.length"
   >
+    <div
+      class="editor-control-trigger"
+      :class="{ 'editor-control-trigger__collapsed': !collapsed }"
+      @click="collapsed = !collapsed"
+    ><i class="el-icon el-icon-prime-jiantouyou2" /></div>
     <el-tabs
       type="border-card"
       class="editor-control-tabs"
     >
-      <el-tab-pane label="编辑">
+      <el-tab-pane label="属性">
         <div
           class="editor-control-group"
           v-for="(group, groupIndex) of settings"

@@ -1,9 +1,51 @@
 @import '@/scss/utilities/_scroll.scss';
 
 .editor-control {
+  position: relative;
   width: 350px;
   height: 100%;
   font-size: 14px;
+
+  &-closed {
+    width: 0;
+  }
+
+  &-trigger {
+    position: absolute;
+    left: -30px;
+    top: 0;
+    font-size: 16px;
+    text-align: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: #f5f7fa;
+    border: 1px solid #e4e7ed;
+    border-right: none;
+    color: #909399;
+    width: 30px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 0 0 0 5px;
+    opacity: 0.3;
+    transition: 0.3s opacity ease;
+
+    .el-icon {
+      transition: 0.3s transform ease;
+    }
+
+    &:hover {
+      // background-color: #f5f7fa;
+      // color: #fff;
+      // border-color: #f5f7fa;
+      opacity: 0.9;
+    }
+
+    &__collapsed {
+      .el-icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
 }
 
 /deep/ .editor-control-tabs {
@@ -28,9 +70,7 @@
 }
 
 /deep/ .el-tabs--border-card {
-  border-top: none;
-  border-right: none;
-  border-color: #ebeef5;
+  border: none;
 }
 
 .editor-control-group {

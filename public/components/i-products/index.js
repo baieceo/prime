@@ -55,13 +55,13 @@
                 key: 'dataSetting',
                 value: [
                   {
-                    label: '商品接口', // 标签
-                    key: 'size', // key
-                    type: 'input', // 设置类型
-                    desc: '商品列表请求接口', // 说明
-                    value: '', // 设置值
+                    label: '商品接口', // 属性标签
+                    key: 'size', // 属性 key
+                    type: 'input', // 属性输入类型
+                    desc: '商品列表请求接口', // 属性说明
+                    value: '', // 属性值
                     default:
-                      'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs#!method=get', // 默认值
+                      'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs#!method=get', // 属性默认值
                     schema: null
                   }
                 ]
@@ -102,6 +102,9 @@
               this.resultData = Object.assign({}, this.resultData, payload)
             }
           }
+        },
+        mounted () {
+          this.$emit('init', this.getSettings())
         }
       })
     })
