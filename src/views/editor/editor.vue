@@ -87,7 +87,7 @@
           </div>
         </div>
         <div class="editor-layout-control">
-          <editor-control :settings="settings"></editor-control>
+          <editor-control :settings="componentSettings"></editor-control>
         </div>
       </div>
     </div>

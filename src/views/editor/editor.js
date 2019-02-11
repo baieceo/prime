@@ -104,7 +104,8 @@ export default {
       devices: devices,
       visualDeviceSrc: './visual-device.html',
       visualDeviceWin: null,
-      settings: []
+      componentId: null,
+      componentSettings: []
     }
   },
   watch: {
@@ -310,11 +311,12 @@ export default {
 
       this.code = this.code.replace(template, this.parseDomToStr(context))
 
-      this.settings = []
+      this.componentSettings = []
     },
     // 设置组件
-    settingComponentById (id, settings) {
-      this.settings = settings
+    settingComponentById (componentId, componentSettings) {
+      this.componentId = componentId
+      this.componentSettings = componentSettings
     },
     handleCodeChange () {
       this.dialogVisible = false

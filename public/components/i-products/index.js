@@ -9,7 +9,7 @@
       ></component>
       <component
         :is="logicComponentName"
-        :props="metaData"
+        :props="props"
         :payload="payloadData"
         @init="initCallback"
         @finish="userOperationActionCallback"
@@ -77,10 +77,15 @@
             ]
           }
         },
+        watch: {
+          props: {
+            handler (newVal, oldVal) {
+              console.log(22222, newVal, oldVal)
+            },
+            deep: true
+          }
+        },
         methods: {
-          getSettings () {
-            return false
-          },
           // 用户操作回调函数
           userOperationCallback (payload) {
             if (payload.type === 'viewItemDetail') {

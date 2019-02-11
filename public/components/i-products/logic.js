@@ -16,12 +16,10 @@
       }
     },
     props: {
-      metaData: {
-        type: Object,
+      props: {
+        type: Array,
         default () {
-          return {
-            name: '交互组件'
-          }
+          return []
         }
       }
     },
@@ -31,26 +29,51 @@
           this.$emit('finish', this.action)
         },
         deep: true
+      },
+      props: {
+        handler (newVal, oldVal) {
+          console.log(11111, newVal)
+          if (
+            this.getProp(newVal, 'data', 'api') !==
+            this.getProp(oldVal, 'data', 'api')
+          ) {
+            this.fetchData()
+          }
+        },
+        deep: true
       }
     },
     created () {
-      fetch(
-        'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs#!method=get'
-      )
-        .then(res => res.json())
-        .then(res => {
-          setTimeout(() => {
-            this.action.type = 'loadDataFinish'
-            this.action.data.list = res.data
-
-            this.$emit('finish', this.action)
-          }, 300)
-        })
+      this.fetchData()
     },
     mounted () {
       this.action.type = 'init'
 
       this.$emit('init', this.action)
+    },
+    methods: {
+      getProp (props, groupKey, propKey) {
+        return (
+          this.props
+            .find(prop => prop.key === groupKey)
+            .value.find(prop => prop.key === propKey) || {}
+        )
+      },
+      fetchData () {
+        let propApi = this.getProp(this.props, 'data', 'api')
+        let api = propApi.value || propApi.default
+
+        fetch(api)
+          .then(res => res.json())
+          .then(res => {
+            setTimeout(() => {
+              this.action.type = 'loadDataFinish'
+              this.action.data.list = res.data
+
+              this.$emit('finish', this.action)
+            }, 300)
+          })
+      }
     }
   })
 })()

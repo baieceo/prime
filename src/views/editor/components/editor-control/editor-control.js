@@ -1,5 +1,6 @@
 export default {
   props: {
+    id: null,
     settings: {
       type: Array,
       default () {
@@ -26,6 +27,14 @@ export default {
     },
     handleControlItemChange (ev, control) {
       control.value = ev.target.value
+
+      this.$parent.sendMessage({
+        cmd: 'update',
+        params: {
+          id: this.id,
+          settings: this.settings
+        }
+      })
     }
   }
 }
