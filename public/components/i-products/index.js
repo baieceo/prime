@@ -48,6 +48,39 @@
           }
         },
         methods: {
+          getSettings () {
+            return [
+              {
+                label: '数据设置',
+                key: 'dataSetting',
+                value: [
+                  {
+                    label: '商品接口', // 标签
+                    key: 'size', // key
+                    type: 'input', // 设置类型
+                    desc: '商品列表请求接口', // 说明
+                    value: '', // 设置值
+                    default:
+                      'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs#!method=get', // 默认值
+                    schema: null
+                  }
+                ]
+              },
+              {
+                label: '格式',
+                key: 'format',
+                value: [
+                  {
+                    label: '尺寸',
+                    key: 'size',
+                    type: 'input',
+                    desc: '列表尺寸',
+                    value: ''
+                  }
+                ]
+              }
+            ]
+          },
           // 用户操作回调函数
           userOperationCallback (payload) {
             if (payload.type === 'viewItemDetail') {

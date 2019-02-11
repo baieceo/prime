@@ -32,7 +32,7 @@ export default {
       },
       // 用于显示的结果数据
       resultData: {
-        type: '',
+        type: "",
         data: null
       },
       // 元数据
@@ -53,6 +53,43 @@ export default {
     InteractiveComponent
   },
   methods: {
+    getProps() {
+      return [
+        {
+          label: "格式",
+          key: "format",
+          value: [
+            {
+              label: "尺寸",
+              key: "size",
+              type: "input",
+              desc: "描述",
+              value: ""
+            },
+            {
+              label: "尺寸",
+              key: "size",
+              type: "input",
+              desc: "描述",
+              value: ""
+            }
+          ]
+        },
+        {
+          label: "格式",
+          key: "format2",
+          value: [
+            {
+              label: "尺寸",
+              key: "size",
+              type: "input",
+              desc: "描述",
+              value: ""
+            }
+          ]
+        }
+      ];
+    },
     // 用户操作回调函数
     userOperationCallback(payload) {
       if (payload.type === "viewItemDetail") {

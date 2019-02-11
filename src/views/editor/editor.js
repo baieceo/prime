@@ -68,6 +68,12 @@ export default {
         name: 'Galaxy S5',
         width: 360,
         height: 640
+      },
+      {
+        name: '自定义',
+        custom: true,
+        width: 414,
+        height: 736
       }
     ]
 
@@ -97,7 +103,8 @@ export default {
       device: devices[0],
       devices: devices,
       visualDeviceSrc: './visual-device.html',
-      visualDeviceWin: null
+      visualDeviceWin: null,
+      settings: []
     }
   },
   watch: {
@@ -172,6 +179,13 @@ export default {
               this.removeComponentById(event.data.params.id)
             })
             .catch(() => {})
+          break
+        case 'settingComponentById':
+          // 设置组件
+          this.settingComponentById(
+            event.data.params.id,
+            event.data.params.settings
+          )
           break
         default:
           break
@@ -295,6 +309,13 @@ export default {
       let template = this.getSource(this.code, 'template')
 
       this.code = this.code.replace(template, this.parseDomToStr(context))
+
+      this.settings = []
+    },
+    // 设置组件
+    settingComponentById (id, settings) {
+      this.settings = settings
+      // alert(id)
     },
     handleCodeChange () {
       this.dialogVisible = false

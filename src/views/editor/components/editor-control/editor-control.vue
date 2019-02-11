@@ -1,7 +1,10 @@
 <style lang="scss" src="./editor-control.scss" scoped></style>
 
 <template>
-  <div class="editor-control">
+  <div
+    class="editor-control"
+    v-if="settings.length"
+  >
     <el-tabs
       type="border-card"
       class="editor-control-tabs"
@@ -9,7 +12,7 @@
       <el-tab-pane label="编辑">
         <div
           class="editor-control-group"
-          v-for="(group, groupIndex) of props"
+          v-for="(group, groupIndex) of settings"
           :key="group.key"
         >
           <el-collapse :value="groupIndex">

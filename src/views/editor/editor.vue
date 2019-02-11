@@ -24,6 +24,7 @@
               v-model="device"
               value-key="name"
               placeholder="请选择"
+              style="width: 150px;"
             >
               <el-option
                 v-for="(device, index) of devices"
@@ -33,6 +34,18 @@
               >
               </el-option>
             </el-select>
+            <div class="editor-device-size-custom">
+              <span>宽</span>
+              <el-input
+                v-model="device.width"
+                :disabled="!device.custom"
+              ></el-input>
+              <span>高</span>
+              <el-input
+                v-model="device.height"
+                :disabled="!device.custom"
+              ></el-input>
+            </div>
           </el-col>
           <el-col
             :span="4"
@@ -74,7 +87,7 @@
           </div>
         </div>
         <div class="editor-layout-control">
-          <editor-control></editor-control>
+          <editor-control :settings="settings"></editor-control>
         </div>
       </div>
     </div>
