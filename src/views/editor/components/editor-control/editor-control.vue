@@ -9,35 +9,31 @@
       class="editor-control-trigger"
       :class="{ 'editor-control-trigger__collapsed': !collapsed }"
       @click="collapsed = !collapsed"
-      v-if="settings.length"
+      v-if="!isEmptyJson(props)"
     ><i class="el-icon el-icon-setting" /></div>
     <div
       class="editor-control-wrapper"
-      v-if="settings.length"
+      v-if="!isEmptyJson(props)"
     >
       <el-tabs
         type="border-card"
         class="editor-control-tabs"
       >
         <el-tab-pane label="属性">
-          <div
-            class="editor-control-group"
-            v-for="(group, groupIndex) of settings"
-            :key="group.key"
-          >
-            <el-collapse :value="groupIndex">
-              <el-collapse-item :name="groupIndex">
+          <div class="editor-control-group">
+            <el-collapse value="props">
+              <el-collapse-item name="props">
                 <template slot="title">
-                  {{ group.label }}
+                  属性设置
                 </template>
                 <div
                   class="editor-control-group__item"
-                  v-for="(control, controlIndex) of group.value"
-                  :key="controlIndex"
+                  v-for="(prop, propIndex) of props"
+                  :key="propIndex"
                 >
                   <div class="editor-control-group__item-head">
-                    <template v-if="control.desc">
-                      <label>{{ control.label }}</label>
+                    <template v-if="prop.editor.desc">
+                      <label>{{ prop.editor.label }}</label>
                       <el-popover
                         placement="top-start"
                         width="200"
@@ -50,20 +46,20 @@
 
                         <div
                           class="editor-control-popover"
-                          v-html="control.desc"
+                          v-html="prop.editor.desc"
                         ></div>
                       </el-popover>
                     </template>
                     <template v-else>
-                      <label>{{ control.label }}</label>
+                      <label>{{ prop.editor.label }}</label>
                     </template>
                   </div>
                   <div class="editor-control-group__item-body">
                     <el-row>
-                      <el-col v-if="control.type === 'input'">
+                      <el-col v-if="prop.editor.type === 'input'">
                         <el-input
-                          :value="getControlItemValue(control)"
-                          @change.native="handleControlItemChange($event, control)"
+                          :value="getPropValue(prop)"
+                          @change.native="handlePropChange($event, prop)"
                           size="small"
                           placeholder="请输入"
                         ></el-input>
@@ -73,13 +69,6 @@
                 </div>
               </el-collapse-item>
             </el-collapse>
-
-            <div class="editor-control-group-head">
-
-            </div>
-            <div class="edotir-control-group-body">
-
-            </div>
           </div>
 
         </el-tab-pane>

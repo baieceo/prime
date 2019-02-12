@@ -89,7 +89,7 @@
         <div class="editor-layout-control">
           <editor-control
             :id="componentId"
-            :settings="componentSettings"
+            :props="componentProps"
           ></editor-control>
         </div>
       </div>

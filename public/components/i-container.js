@@ -149,7 +149,7 @@
             cmd: 'settingComponentById',
             params: {
               id: this.id,
-              settings: this.$children[0].props || []
+              props: this.$children[0].props || {}
             }
           },
           '*'

@@ -17,9 +17,9 @@
     },
     props: {
       props: {
-        type: Array,
+        type: Object,
         default () {
-          return []
+          return {}
         }
       }
     },
@@ -32,18 +32,7 @@
       },
       props: {
         handler (newVal, oldVal) {
-          /*
-          console.log(
-            'product.logic',
-            this.getProp(newVal, 'data', 'api'),
-            this.getProp(oldVal, 'data', 'api')
-          )
-          */
-
-          if (
-            this.getProp(newVal, 'data', 'api').value !==
-            this.getProp(oldVal, 'data', 'api').value
-          ) {
+          if (newVal.api.value !== oldVal.api.value) {
             this.action.type = 'init'
 
             this.$emit('init', this.action)
@@ -63,19 +52,9 @@
       this.$emit('init', this.action)
     },
     methods: {
-      getProp (props, groupKey, propKey) {
-        return (
-          props
-            .find(prop => prop.key === groupKey)
-            .value.find(prop => prop.key === propKey) || {}
-        )
-      },
       fetchData () {
-        let propApi = this.getProp(this.props, 'data', 'api')
-        let api = propApi.value || propApi.default
-
         window
-          .fetch(api)
+          .fetch(this.props.api.value || this.props.api.editor.default)
           .then(res => res.json())
           .then(res => {
             this.action.type = 'loadDataFinish'

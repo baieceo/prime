@@ -1,10 +1,10 @@
 export default {
   props: {
     id: null,
-    settings: {
-      type: Array,
+    props: {
+      type: Object,
       default () {
-        return []
+        return {}
       }
     }
   },
@@ -14,22 +14,25 @@ export default {
     }
   },
   watch: {
-    settings: {
+    props: {
       handler (newVal) {
-        this.collapsed = newVal && newVal.length
+        this.collapsed = newVal && !this.isEmptyJson(newVal)
       },
       deep: true
     }
   },
   methods: {
-    getControlItemValue (control) {
+    isEmptyJson (json) {
+      return JSON.stringify(json) === '{}'
+    },
+    getPropValue (control) {
       return control.value || control.default
     },
-    handleControlItemChange (ev, control) {
+    handlePropChange (ev, control) {
       /*
       console.log(
         '修改前 editor-control',
-        JSON.parse(JSON.stringify(this.settings))
+        JSON.parse(JSON.stringify(this.props))
       )
       */
 
@@ -38,7 +41,7 @@ export default {
       /*
       console.log(
         '修改后 editor-control',
-        JSON.parse(JSON.stringify(this.settings))
+        JSON.parse(JSON.stringify(this.props))
       )
       */
 
@@ -46,7 +49,7 @@ export default {
         cmd: 'updateComponentProps',
         params: {
           id: this.id,
-          props: this.settings
+          props: this.props
         }
       })
     }
