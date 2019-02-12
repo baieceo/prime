@@ -26,13 +26,27 @@ export default {
       return control.value || control.default
     },
     handleControlItemChange (ev, control) {
+      /*
+      console.log(
+        '修改前 editor-control',
+        JSON.parse(JSON.stringify(this.settings))
+      )
+      */
+
       control.value = ev.target.value
 
+      /*
+      console.log(
+        '修改后 editor-control',
+        JSON.parse(JSON.stringify(this.settings))
+      )
+      */
+
       this.$parent.sendMessage({
-        cmd: 'update',
+        cmd: 'updateComponentProps',
         params: {
           id: this.id,
-          settings: this.settings
+          props: this.settings
         }
       })
     }

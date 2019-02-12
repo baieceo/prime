@@ -41,13 +41,17 @@
                       <el-popover
                         placement="top-start"
                         width="200"
-                        trigger="hover"
-                        :content="control.desc"
+                        trigger="click"
                       >
                         <i
                           class="el-icon-question"
                           slot="reference"
                         ></i>
+
+                        <div
+                          class="editor-control-popover"
+                          v-html="control.desc"
+                        ></div>
                       </el-popover>
                     </template>
                     <template v-else>

@@ -32,11 +32,22 @@
       },
       props: {
         handler (newVal, oldVal) {
-          console.log(11111, newVal)
-          if (
-            this.getProp(newVal, 'data', 'api') !==
+          /*
+          console.log(
+            'product.logic',
+            this.getProp(newVal, 'data', 'api'),
             this.getProp(oldVal, 'data', 'api')
+          )
+          */
+
+          if (
+            this.getProp(newVal, 'data', 'api').value !==
+            this.getProp(oldVal, 'data', 'api').value
           ) {
+            this.action.type = 'init'
+
+            this.$emit('init', this.action)
+
             this.fetchData()
           }
         },
@@ -54,7 +65,7 @@
     methods: {
       getProp (props, groupKey, propKey) {
         return (
-          this.props
+          props
             .find(prop => prop.key === groupKey)
             .value.find(prop => prop.key === propKey) || {}
         )
@@ -63,15 +74,20 @@
         let propApi = this.getProp(this.props, 'data', 'api')
         let api = propApi.value || propApi.default
 
-        fetch(api)
+        window
+          .fetch(api)
           .then(res => res.json())
           .then(res => {
-            setTimeout(() => {
-              this.action.type = 'loadDataFinish'
-              this.action.data.list = res.data
+            this.action.type = 'loadDataFinish'
+            this.action.data.list = res.data
 
-              this.$emit('finish', this.action)
-            }, 300)
+            this.$emit('finish', this.action)
+          })
+          .catch(e => {
+            this.action.type = 'error'
+            this.action.message = '网络错误'
+
+            this.$emit('action', this.action)
           })
       }
     }

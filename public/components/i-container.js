@@ -117,6 +117,7 @@
       return {}
     },
     methods: {
+      // 移动组件
       handleMove (direction) {
         window.parent.postMessage(
           {
@@ -129,6 +130,7 @@
           '*'
         )
       },
+      // 删除组件
       handleRemove (ev) {
         window.parent.postMessage(
           {
@@ -140,6 +142,7 @@
           '*'
         )
       },
+      // 设置属性
       handleSetting (ev) {
         window.parent.postMessage(
           {
@@ -151,7 +154,29 @@
           },
           '*'
         )
+      },
+      // 处理消息
+      handleMessage (ev) {
+        if (ev.data.cmd === 'updateComponentProps') {
+          this.updateComponentProps(ev)
+        }
+      },
+      // 更新子组件属性
+      updateComponentProps (ev) {
+        let id = ev.data.params.id
+        let props = ev.data.params.props
+        let component = this.$children[0]
+
+        if (id === this.id && component && props) {
+          // console.log('子组件', component.props)
+          // console.log('接收到', props)
+
+          component.props = props
+        }
       }
+    },
+    mounted () {
+      window.addEventListener('message', this.handleMessage)
     }
   })
 })()

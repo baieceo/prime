@@ -52,6 +52,10 @@
       }
     }
   }
+
+  &-popover {
+    word-break: break-all;
+  }
 }
 
 /deep/ .editor-control-tabs {

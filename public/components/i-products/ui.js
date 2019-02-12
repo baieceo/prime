@@ -29,6 +29,10 @@
     img {
       border: none;
     }
+
+    .el-toast {
+      min-width: 250px;
+    }
     
     .loading {
       width: 80px;
@@ -162,6 +166,12 @@
           <span></span>
         </div>
       </div>
+      <el-alert
+        v-if="props.type === 'error'"
+        :title="props.message"
+        :closable="false"
+        type="error">
+      </el-alert>
       <div
         class="products"
         v-if="props.type === 'loadDataFinish'"
