@@ -144,12 +144,15 @@
       },
       // 设置属性
       handleSetting (ev) {
+        let component = this.$children[0]
+
         window.parent.postMessage(
           {
             cmd: 'settingComponentById',
             params: {
               id: this.id,
-              props: this.$children[0].props || {}
+              props: component.props || {},
+              styles: component.styles || {}
             }
           },
           '*'
@@ -157,21 +160,30 @@
       },
       // 处理消息
       handleMessage (ev) {
-        if (ev.data.cmd === 'updateComponentProps') {
-          this.updateComponentProps(ev)
+        if (ev.data.cmd === 'updateComponentData') {
+          this.updateComponentData(ev)
         }
       },
+      isEmptyJson (json) {
+        return JSON.stringify(json) === '{}'
+      },
       // 更新子组件属性
-      updateComponentProps (ev) {
+      updateComponentData (ev) {
         let id = ev.data.params.id
-        let props = ev.data.params.props
+        let type = ev.data.params.type
+        let data = ev.data.params.data
         let component = this.$children[0]
 
-        if (id === this.id && component && props) {
+        if (
+          id === this.id &&
+          component &&
+          component[type] &&
+          !this.isEmptyJson(data)
+        ) {
           // console.log('子组件', component.props)
           // console.log('接收到', props)
 
-          component.props = props
+          component[type] = data
         }
       }
     },

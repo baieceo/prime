@@ -3,8 +3,8 @@
     <div class="unit-component">
       <component
         :is="uiComponentName"
-        :style="uiComponentStyle"
         :props="resultData"
+        :styles="styles"
         @action="userOperationCallback"
       ></component>
       <component
@@ -49,15 +49,24 @@
             version: '0.1.0',
             visible: true,
             // 样式配置，提供给控制面板及 ui 组件
-            style: {
-              margin: '20px 20px'
+            styles: {
+              'module-background-color': {
+                type: 'String',
+                default: '',
+                editor: {
+                  label: '背景色', // 属性标签
+                  type: 'color', // 属性输入类型
+                  default: '#fff', // 属性默认值
+                  desc: '设置模块背景颜色'
+                },
+                value: '' // 属性值
+              }
             },
             // 属性配置（必须），提供控制面板及组件内部使用
             props: {
               api: {
                 type: 'String',
-                default:
-                  'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs#!method=get',
+                default: '',
                 editor: {
                   label: '商品接口', // 属性标签
                   type: 'input', // 属性输入类型

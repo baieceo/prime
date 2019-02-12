@@ -6,6 +6,12 @@ export default {
       default () {
         return {}
       }
+    },
+    styles: {
+      type: Object,
+      default () {
+        return {}
+      }
     }
   },
   data () {
@@ -25,31 +31,34 @@ export default {
     isEmptyJson (json) {
       return JSON.stringify(json) === '{}'
     },
-    getPropValue (control) {
+    getControlValue (control) {
       return control.value || control.default
     },
-    handlePropChange (ev, control) {
+    handleControlChange (ev, control, type) {
       /*
       console.log(
         '修改前 editor-control',
-        JSON.parse(JSON.stringify(this.props))
+        JSON.parse(JSON.stringify(this[type]))
       )
       */
 
-      control.value = ev.target.value
+      let value = ev.target ? ev.target.value : ev
+
+      control.value = value
 
       /*
       console.log(
         '修改后 editor-control',
-        JSON.parse(JSON.stringify(this.props))
+        JSON.parse(JSON.stringify(this[type]))
       )
       */
 
       this.$parent.sendMessage({
-        cmd: 'updateComponentProps',
+        cmd: 'updateComponentData',
         params: {
           id: this.id,
-          props: this.props
+          data: this[type],
+          type: type
         }
       })
     }

@@ -90,6 +90,7 @@
           <editor-control
             :id="componentId"
             :props="componentProps"
+            :styles="componentStyles"
           ></editor-control>
         </div>
       </div>

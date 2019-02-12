@@ -105,7 +105,8 @@ export default {
       visualDeviceSrc: './visual-device.html',
       visualDeviceWin: null,
       componentId: null,
-      componentProps: {}
+      componentProps: {},
+      componentStyles: {}
     }
   },
   watch: {
@@ -185,7 +186,8 @@ export default {
           // 设置组件
           this.settingComponentById(
             event.data.params.id,
-            event.data.params.props
+            event.data.params.props,
+            event.data.params.styles
           )
           break
         default:
@@ -312,11 +314,13 @@ export default {
       this.code = this.code.replace(template, this.parseDomToStr(context))
 
       this.componentProps = {}
+      this.componentStyles = {}
     },
     // 设置组件
-    settingComponentById (componentId, componentProps) {
+    settingComponentById (componentId, componentProps, componentStyles) {
       this.componentId = componentId
       this.componentProps = componentProps
+      this.componentStyles = componentStyles
     },
     handleCodeChange () {
       this.dialogVisible = false
