@@ -104,7 +104,7 @@ export default {
       devices: devices,
       visualDeviceSrc: './visual-device.html',
       visualDeviceWin: null,
-      visualDeviceVisible: false,
+      visualDeviceVisible: true,
       componentId: null,
       componentProps: {},
       componentStyles: {},
