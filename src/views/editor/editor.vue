@@ -71,12 +71,24 @@
             <div class="editor-stage">
               <iframe
                 frameborder="0"
+                name="boot"
+                scrolling="auto"
+                ref="visualDeviceBoot"
+                src="./visual-device-boot.html"
+                :width="device.width"
+                :height="device.height"
+                :style="{ display: visualDeviceVisible ? 'none' : 'block' }"
+              />
+
+              <iframe
+                frameborder="0"
                 name="stage"
                 scrolling="auto"
                 ref="visualDevice"
                 :src="visualDeviceSrc"
                 :width="device.width"
                 :height="device.height"
+                :style="{ visibility: visualDeviceVisible ? 'visible' : 'hidden', position: visualDeviceVisible ? 'static' : 'absolute' }"
               />
               <!-- <i-display
               ref="display"

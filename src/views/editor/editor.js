@@ -104,6 +104,7 @@ export default {
       devices: devices,
       visualDeviceSrc: './visual-device.html',
       visualDeviceWin: null,
+      visualDeviceVisible: false,
       componentId: null,
       componentProps: {},
       componentStyles: {},
@@ -146,6 +147,8 @@ export default {
 
     this.visualDeviceWin.onload = () => {
       this.code = defaultCode
+
+      this.visualDeviceVisible = true
     }
   },
 
