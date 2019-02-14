@@ -56,6 +56,20 @@
   &-popover {
     word-break: break-all;
   }
+
+  &-slider {
+    /deep/ .el-slider__input {
+      width: 50px;
+    }
+
+    /deep/ .el-slider__button-wrapper {
+      transform: translateX(-23%);
+    }
+
+    /deep/ .el-slider__runway.show-input {
+      margin-right: 80px;
+    }
+  }
 }
 
 /deep/ .editor-control-tabs {
@@ -113,6 +127,10 @@
 
   /deep/ .el-collapse-item__content {
     padding-bottom: 0;
+  }
+
+  /deep/ .el-row {
+    min-height: 32px;
   }
 
   &-head {

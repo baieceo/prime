@@ -152,7 +152,8 @@
             params: {
               id: this.id,
               props: component.props || {},
-              styles: component.styles || {}
+              styles: component.styles || {},
+              animates: component.animates || {}
             }
           },
           '*'

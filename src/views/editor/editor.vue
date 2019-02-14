@@ -91,6 +91,7 @@
             :id="componentId"
             :props="componentProps"
             :styles="componentStyles"
+            :animates="componentAnimates"
           ></editor-control>
         </div>
       </div>
