@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export default {
   props: {
     id: null,
@@ -343,27 +345,55 @@ export default {
     isEmptyJson (json) {
       return JSON.stringify(json) === '{}'
     },
-    getControlValue (control) {
-      return control.value || control.editor.default
-    },
-    handleControlChange (ev, control, type) {
-      /*
-      console.log(
-        '修改前 editor-control',
-        JSON.parse(JSON.stringify(this[type]))
-      )
-      */
+    getControlValue (item, key) {
+      let value
 
+      if (key !== undefined) {
+        // 处理动画属性
+        if (item.value !== null) {
+          if (item.value[key] !== undefined) {
+            value = item.value[key]
+          } else {
+            value = item.default[key]
+          }
+        } else {
+          value = item.default[key]
+        }
+      } else {
+        // 处理非动画属性
+        if (item.value !== null) {
+          value = item.value
+        } else {
+          value = item.default
+        }
+      }
+
+      if (key === 'duration') {
+        console.log('getControlValue', key, value)
+      }
+
+      return value
+    },
+    handleControlChange (ev, item, type, key) {
       let value = ev.target ? ev.target.value : ev
 
-      control.value = value
+      if (key === 'duration') {
+        console.log('handleControlChange', item, key, value)
+      }
 
-      /*
-      console.log(
-        '修改后 editor-control',
-        JSON.parse(JSON.stringify(this[type]))
-      )
-      */
+      if (type === 'animates') {
+        if (item.value === null) {
+          item.value = {}
+        }
+
+        if (item.value[key] === undefined) {
+          Vue.set(item.value, key, value)
+        } else {
+          item.value[key] = value
+        }
+      } else {
+        item.value = value
+      }
 
       this.$parent.sendMessage({
         cmd: 'updateComponentData',

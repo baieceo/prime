@@ -52,38 +52,44 @@
             styles: {
               'module-background-color': {
                 type: 'String',
-                default: '',
+                default: '#fff',
                 editor: {
                   label: '背景色', // 属性标签
                   type: 'color', // 属性输入类型
-                  default: '#fff', // 属性默认值
                   desc: '设置模块背景颜色'
                 },
-                value: '' // 属性值
+                value: null // 属性值
               }
             },
             // 属性配置（必须），提供控制面板及组件内部使用
             props: {
               api: {
                 type: 'String',
-                default: '',
+                default:
+                  'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs#!method=get',
                 editor: {
                   label: '商品接口', // 属性标签
                   type: 'input', // 属性输入类型
                   // 属性说明
                   desc:
-                    '商品列表请求接口<p>测试连接1：https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs#!method=get&t=1</p><p>测试连接2：https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs#!method=get&t=2<p>',
-                  default:
-                    'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs#!method=get' // 属性默认值
+                    '商品列表请求接口<p>测试连接1：https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs#!method=get&t=1</p><p>测试连接2：https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs#!method=get&t=2<p>'
                 },
-                value: '' // 属性值
+                value: null // 属性值
               }
             },
             // 动画
             animates: {
               list: {
                 type: 'Object',
-                default: '',
+                default: {
+                  enable: true,
+                  loop: true,
+                  duration: 5,
+                  delay: 2,
+                  name: 'bounce',
+                  direction: 'reverse',
+                  mode: 'forwards'
+                },
                 editor: {
                   label: '列表动画', // 属性标签
                   type: 'animate', // 属性输入类型
@@ -98,21 +104,19 @@
                   }, // 属性默认值
                   desc: '设置列表相关动画'
                 },
-                value: {} // 属性值
+                value: null // 属性值
               }
             }
           }
         },
-        /*
         watch: {
-          props: {
+          animates: {
             handler (newVal, oldVal) {
-              console.log('product.index', newVal, oldVal)
+              console.log('product.animates', newVal, oldVal)
             },
             deep: true
           }
         },
-        */
         methods: {
           // 用户操作回调函数
           userOperationCallback (payload) {

@@ -28,8 +28,8 @@
                 </template>
                 <div
                   class="editor-control-group__item"
-                  v-for="(propItem, propIndex) of props"
-                  :key="propIndex"
+                  v-for="(propItem, propItemKey, propIndex) of props"
+                  :key="propItemKey + propIndex"
                 >
                   <div class="editor-control-group__item-head">
                     <template v-if="propItem.editor.desc">
@@ -173,7 +173,10 @@
                         align="middle"
                       >
                         <el-col>
-                          <el-switch v-model="animateGroupItem.editor.default.enable"></el-switch>
+                          <el-switch
+                            :value="getControlValue(animateGroupItem, 'enable')"
+                            @change="handleControlChange($event, animateGroupItem, 'animates', 'enable')"
+                          ></el-switch>
                         </el-col>
                       </el-row>
                     </template>
@@ -185,8 +188,9 @@
                       >
                         <el-col>
                           <el-switch
-                            v-model="animateGroupItem.editor.default.loop"
-                            :disabled="!animateGroupItem.editor.default.enable"
+                            :value="getControlValue(animateGroupItem, 'loop')"
+                            :disabled="!getControlValue(animateGroupItem, 'enable')"
+                            @change="handleControlChange($event, animateGroupItem, 'animates', 'loop')"
                           ></el-switch>
                         </el-col>
                       </el-row>
@@ -200,12 +204,13 @@
                         <el-col>
                           <el-slider
                             class="editor-control-slider"
-                            v-model="animateGroupItem.editor.default.duration"
+                            show-input
                             :min="0"
                             :max="10"
                             :show-input-controls="false"
-                            :disabled="!animateGroupItem.editor.default.enable"
-                            show-input
+                            :value="getControlValue(animateGroupItem, 'duration')"
+                            :disabled="!getControlValue(animateGroupItem, 'enable')"
+                            @change="handleControlChange($event, animateGroupItem, 'animates', 'duration')"
                           >
                           </el-slider>
                         </el-col>
@@ -220,12 +225,13 @@
                         <el-col>
                           <el-slider
                             class="editor-control-slider"
-                            v-model="animateGroupItem.editor.default.delay"
+                            show-input
                             :min="0"
                             :max="10"
                             :show-input-controls="false"
-                            :disabled="!animateGroupItem.editor.default.enable"
-                            show-input
+                            :value="getControlValue(animateGroupItem, 'delay')"
+                            :disabled="!getControlValue(animateGroupItem, 'enable')"
+                            @change="handleControlChange($event, animateGroupItem, 'animates', 'delay')"
                           >
                           </el-slider>
                         </el-col>
@@ -239,10 +245,11 @@
                       >
                         <el-col>
                           <el-select
-                            v-model="animateValue"
                             placeholder="请选择"
                             size="small"
-                            :disabled="!animateGroupItem.editor.default.enable"
+                            :value="getControlValue(animateGroupItem, 'name')"
+                            :disabled="!getControlValue(animateGroupItem, 'enable')"
+                            @change="handleControlChange($event, animateGroupItem, 'animates', 'name')"
                           >
                             <el-option-group
                               v-for="group in animateGroups"
@@ -270,9 +277,10 @@
                         <el-col>
                           <el-select
                             placeholder="请选择"
-                            value="normal"
                             size="small"
-                            :disabled="!animateGroupItem.editor.default.enable"
+                            :value="getControlValue(animateGroupItem, 'direction')"
+                            :disabled="!getControlValue(animateGroupItem, 'enable')"
+                            @change="handleControlChange($event, animateGroupItem, 'animates', 'direction')"
                           >
                             <el-option-group>
                               <el-option
@@ -304,10 +312,11 @@
                       >
                         <el-col>
                           <el-select
-                            value="normal"
                             placeholder="请选择"
                             size="small"
-                            :disabled="!animateGroupItem.editor.default.enable"
+                            :value="getControlValue(animateGroupItem, 'mode')"
+                            :disabled="!getControlValue(animateGroupItem, 'enable')"
+                            @change="handleControlChange($event, animateGroupItem, 'animates', 'mode')"
                           >
                             <el-option-group>
                               <el-option

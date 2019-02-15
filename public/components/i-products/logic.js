@@ -54,7 +54,7 @@
     methods: {
       fetchData () {
         window
-          .fetch(this.props.api.value || this.props.api.editor.default)
+          .fetch(this.props.api.value || this.props.api.default)
           .then(res => res.json())
           .then(res => {
             this.action.type = 'loadDataFinish'

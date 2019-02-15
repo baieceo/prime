@@ -256,7 +256,7 @@
       moduleBackgroundColor () {
         return (
           this.styles['module-background-color'].value ||
-          this.styles['module-background-color'].editor.default
+          this.styles['module-background-color'].default
         )
       }
     },
