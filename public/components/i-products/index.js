@@ -85,38 +85,16 @@
                 type: 'Object',
                 default: '',
                 editor: {
-                  label: '列表', // 属性标签
+                  label: '列表动画', // 属性标签
                   type: 'animate', // 属性输入类型
                   default: {
-                    // 动作
-                    // 入场动作
-                    enter: {
-                      enable: false, // 是否启用
-                      duration: 0, // 速度
-                      delay: 0, // 延迟
-                      name: '', // 动画名称
-                      direction: '', // 方向
-                      mode: '' // 动画结束状态
-                    },
-                    // 场内动作
-                    inside: {
-                      enable: false, // 是否启用
-                      loop: false, // 是否循环
-                      duration: 0, // 速度
-                      delay: 0, // 延迟
-                      name: '', // 动画名称
-                      direction: '', // 方向
-                      mode: '' // 动画结束状态
-                    },
-                    // 退场动作
-                    exit: {
-                      enable: false, // 是否启用
-                      duration: 0, // 速度
-                      delay: 0, // 延迟
-                      name: '', // 动画名称
-                      direction: '', // 方向
-                      mode: '' // 动画结束状态
-                    }
+                    enable: false, // 是否启用
+                    loop: false, // 是否循环
+                    duration: 0, // 速度
+                    delay: 0, // 延迟
+                    name: '', // 动画名称
+                    direction: '', // 方向
+                    mode: '' // 动画结束状态
                   }, // 属性默认值
                   desc: '设置列表相关动画'
                 },

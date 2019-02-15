@@ -137,21 +137,19 @@
             v-for="(animateGroupItem, animateGroupKey, animateGroupIndex) of animates"
             :key="animateGroupKey + animateGroupIndex"
           >
-            <el-collapse
-              v-for="(animateItem, animateKey, animateIndex) of animateGroupItem.editor.default"
-              :key="animateGroupKey + animateGroupIndex + '-' + animateKey + animateIndex"
-            >
-              <el-collapse-item :name="animateGroupKey + '-' + animateKey">
+            <el-collapse :key="animateGroupKey + animateGroupIndex">
+              <el-collapse-item :name="animateGroupKey">
                 <template slot="title">
-                  {{ animateGroupItem.editor.label + { enter: '入场', inside: '场内', exit: '出场' }[animateKey] + '动画' }}
+                  {{ animateGroupItem.editor.label }}
                 </template>
+
                 <div
                   class="editor-control-group__item"
-                  v-for="(animateControl, animateControlKey, animateControlIndex) of animateItem"
-                  :key="animateGroupKey + animateGroupIndex + '-' + animateKey + animateIndex + '-' + animateControlKey + animateControlIndex"
+                  v-for="(animateItem, animateKey, animateIndex) of animateGroupItem.editor.default"
+                  :key="animateGroupKey + animateGroupIndex + '-' + animateKey + animateIndex"
                 >
                   <div class="editor-control-group__item-head">
-                    <label>{{ { enable: '是否启用', loop: '是否循环', duration: '动画时长', delay: '动画延时', direction: '运动方向', mode: '动画方式', name: '动画名称' }[animateControlKey] }}</label>
+                    <label>{{ { enable: '是否启用', loop: '是否循环', duration: '动画时长', delay: '动画延时', direction: '运动方向', mode: '动画方式', name: '动画名称' }[animateKey] }}</label>
 
                     <el-popover
                       placement="top-start"
@@ -164,37 +162,37 @@
                       ></i>
 
                       <div class="editor-control-popover">
-                        设置{{ animateGroupItem.editor.label + { enter: '入场', inside: '场内', exit: '出场' }[animateKey] + '动画' }}
-                        {{ { enable: '是否启用', loop: '是否循环', duration: '动画时长', delay: '动画延时', direction: '运动方向', mode: '动画方式', name: '动画名称' }[animateControlKey] }}</div>
+                        设置{{ animateGroupItem.editor.label + '动画' }}
+                        {{ { enable: '是否启用', loop: '是否循环', duration: '动画时长', delay: '动画延时', direction: '运动方向', mode: '动画方式', name: '动画名称' }[animateKey] }}</div>
                     </el-popover>
                   </div>
                   <div class="editor-control-group__item-body">
-                    <template v-if="animateControlKey === 'enable'">
+                    <template v-if="animateKey === 'enable'">
                       <el-row
                         type="flex"
                         align="middle"
                       >
                         <el-col>
-                          <el-switch v-model="animateItem.enable"></el-switch>
+                          <el-switch v-model="animateGroupItem.editor.default.enable"></el-switch>
                         </el-col>
                       </el-row>
                     </template>
 
-                    <template v-if="animateControlKey === 'loop'">
+                    <template v-if="animateKey === 'loop'">
                       <el-row
                         type="flex"
                         align="middle"
                       >
                         <el-col>
                           <el-switch
-                            v-model="animateItem.loop"
-                            :disabled="!animateItem.enable"
+                            v-model="animateGroupItem.editor.default.loop"
+                            :disabled="!animateGroupItem.editor.default.enable"
                           ></el-switch>
                         </el-col>
                       </el-row>
                     </template>
 
-                    <template v-if="animateControlKey === 'duration'">
+                    <template v-if="animateKey === 'duration'">
                       <el-row
                         type="flex"
                         align="middle"
@@ -202,11 +200,11 @@
                         <el-col>
                           <el-slider
                             class="editor-control-slider"
-                            v-model="animateItem.duration"
+                            v-model="animateGroupItem.editor.default.duration"
                             :min="0"
                             :max="10"
                             :show-input-controls="false"
-                            :disabled="!animateItem.enable"
+                            :disabled="!animateGroupItem.editor.default.enable"
                             show-input
                           >
                           </el-slider>
@@ -214,7 +212,7 @@
                       </el-row>
                     </template>
 
-                    <template v-if="animateControlKey === 'delay'">
+                    <template v-if="animateKey === 'delay'">
                       <el-row
                         type="flex"
                         align="middle"
@@ -222,11 +220,11 @@
                         <el-col>
                           <el-slider
                             class="editor-control-slider"
-                            v-model="animateItem.delay"
+                            v-model="animateGroupItem.editor.default.delay"
                             :min="0"
                             :max="10"
                             :show-input-controls="false"
-                            :disabled="!animateItem.enable"
+                            :disabled="!animateGroupItem.editor.default.enable"
                             show-input
                           >
                           </el-slider>
@@ -234,7 +232,7 @@
                       </el-row>
                     </template>
 
-                    <template v-if="animateControlKey === 'name'">
+                    <template v-if="animateKey === 'name'">
                       <el-row
                         type="flex"
                         align="middle"
@@ -244,7 +242,7 @@
                             v-model="animateValue"
                             placeholder="请选择"
                             size="small"
-                            :disabled="!animateItem.enable"
+                            :disabled="!animateGroupItem.editor.default.enable"
                           >
                             <el-option-group
                               v-for="group in animateGroups"
@@ -264,7 +262,7 @@
                       </el-row>
                     </template>
 
-                    <template v-if="animateControlKey === 'direction'">
+                    <template v-if="animateKey === 'direction'">
                       <el-row
                         type="flex"
                         align="middle"
@@ -274,7 +272,7 @@
                             placeholder="请选择"
                             value="normal"
                             size="small"
-                            :disabled="!animateItem.enable"
+                            :disabled="!animateGroupItem.editor.default.enable"
                           >
                             <el-option-group>
                               <el-option
@@ -299,7 +297,7 @@
                       </el-row>
                     </template>
 
-                    <template v-if="animateControlKey === 'mode'">
+                    <template v-if="animateKey === 'mode'">
                       <el-row
                         type="flex"
                         align="middle"
@@ -309,7 +307,7 @@
                             value="normal"
                             placeholder="请选择"
                             size="small"
-                            :disabled="!animateItem.enable"
+                            :disabled="!animateGroupItem.editor.default.enable"
                           >
                             <el-option-group>
                               <el-option
