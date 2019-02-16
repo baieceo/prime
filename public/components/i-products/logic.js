@@ -30,21 +30,16 @@
         },
         deep: true
       },
-      props: {
-        handler (newVal, oldVal) {
-          if (newVal.api.value !== oldVal.api.value) {
-            this.action.type = 'init'
+      'props.api.value' () {
+        this.action.type = 'init'
 
-            this.$emit('init', this.action)
+        this.$emit('init', this.action)
 
-            this.fetchData()
-          }
-        },
-        deep: true
+        this.fetchData()
       }
     },
     created () {
-      this.fetchData()
+      // this.fetchData()
     },
     mounted () {
       this.action.type = 'init'
@@ -53,7 +48,6 @@
     },
     methods: {
       fetchData () {
-        alert(this.props.api.value)
         window
           .fetch(this.props.api.value)
           .then(res => res.json())

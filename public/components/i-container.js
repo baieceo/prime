@@ -197,12 +197,21 @@
       },
       // 初始化子组件
       initComponent (component) {
+        // 组件内部初始化函数，必须存在，每个组件都一致
         let types = ['props', 'styles', 'animates']
 
         types.forEach(type => {
           for (let key in component[type]) {
             if (component[type][key].value === null) {
               component[type][key].value = component[type][key].default
+            }
+
+            if (
+              component.data &&
+              component.data[type] &&
+              component.data[type][key] !== undefined
+            ) {
+              component[type][key].value = component.data[type][key].value
             }
           }
         })

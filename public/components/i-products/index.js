@@ -62,7 +62,7 @@
             styles: {
               'module-background-color': {
                 type: 'String',
-                default: '#fff',
+                default: 'red',
                 editor: {
                   label: '背景色', // 属性标签
                   type: 'color', // 属性输入类型
@@ -122,26 +122,15 @@
         watch: {
           data: {
             handler (newVal, oldVal) {
-              for (let key in newVal) {
-                console.log('data change: ', key, newVal, oldVal)
+              console.log('i-products.index.watch.data: ', newVal, oldVal)
 
-                if (key === 'props') {
-                  for (let propKey in this.props) {
-                    this.props[propKey].value = newVal.props[propKey].value
-                  }
+              for (let prop in newVal) {
+                for (let key in this[prop]) {
+                  Object.assign(this[prop][key].value, newVal[prop][key].value)
                 }
-
-                if (key === 'styles') {
-                  for (let styleKey in this.styles) {
-                    this.styles[styleKey].value = newVal.styles[styleKey].value
-                  }
-                }
-
-                console.log(111, newVal)
               }
             },
-            deep: true,
-            immediate: true
+            deep: true
           }
         },
         methods: {
@@ -171,10 +160,11 @@
             }
           }
         },
-        mounted () {
+        created () {
           console.log(55555, 'props', this.props)
           console.log(55555, 'styles', this.styles)
           console.log(55555, 'animates', this.animates)
+          console.log(55555, 'data', this.data)
         }
       })
     })

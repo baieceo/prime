@@ -30,9 +30,22 @@ export default {
                     id: 'mR2SxSydSqR363r73i0tiLz51e2Oap6S',
                     name: 'i-products',
                     data: {
+                        props: {
+                            b: {
+                                value: 1
+                            }
+                        },
                         styles: {
                             'module-background-color': {
-                                value: 'red'
+                                value: 'blue'
+                            }
+                        },
+                        animates: {
+                            list: {
+                                value: {
+                                    enable: false,
+                                    duration: 0
+                                }
                             }
                         }
                     }

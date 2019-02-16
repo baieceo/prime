@@ -369,6 +369,8 @@ export default {
     },
     visible (newVal) {
       this.$emit('update:visible', newVal)
+
+      console.log(this.props, this.styles)
     }
   },
   methods: {
