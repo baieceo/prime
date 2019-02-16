@@ -30,16 +30,13 @@
         },
         deep: true
       },
-      'props.api.value' () {
+      'props.api.value' (newVal) {
         this.action.type = 'init'
 
         this.$emit('init', this.action)
 
         this.fetchData()
       }
-    },
-    created () {
-      // this.fetchData()
     },
     mounted () {
       this.action.type = 'init'

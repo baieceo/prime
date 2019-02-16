@@ -31,8 +31,8 @@ export default {
                     name: 'i-products',
                     data: {
                         props: {
-                            b: {
-                                value: 1
+                            api: {
+                                value: 'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs?t=1'
                             }
                         },
                         styles: {
