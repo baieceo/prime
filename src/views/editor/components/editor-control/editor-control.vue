@@ -57,12 +57,21 @@
                   <div class="editor-control-group__item-body">
                     <el-row>
                       <el-col v-if="propItem.editor.type === 'input'">
-                        <el-input
-                          :value="propItem.value"
-                          @change="handleChange($event, propItem)"
-                          size="small"
-                          placeholder="请输入"
-                        ></el-input>
+                        <template v-if="propItem.editor.immediate">
+                          <el-input
+                            v-model="propItem.value"
+                            size="small"
+                            placeholder="请输入"
+                          ></el-input>
+                        </template>
+                        <template v-else>
+                          <el-input
+                            :value="propItem.value"
+                            @change="handleChange($event, propItem)"
+                            size="small"
+                            placeholder="请输入"
+                          ></el-input>
+                        </template>
                       </el-col>
                     </el-row>
                   </div>
@@ -110,12 +119,22 @@
                   <div class="editor-control-group__item-body">
                     <el-row>
                       <el-col v-if="styleItem.editor.type === 'input'">
-                        <el-input
-                          :value="styleItem.value"
-                          @change="handleChange($event, styleItem)"
-                          size="small"
-                          placeholder="请输入"
-                        ></el-input>
+                        <template v-if="styleItem.immediate">
+                          <el-input
+                            v-model="styleItem.value"
+                            size="small"
+                            placeholder="请输入"
+                          ></el-input>
+                        </template>
+                        <template v-else>
+                          <el-input
+                            :value="styleItem.value"
+                            @change="handleChange($event, styleItem)"
+                            size="small"
+                            placeholder="请输入"
+                          ></el-input>
+                        </template>
+
                       </el-col>
                       <el-col v-if="styleItem.editor.type === 'color'">
                         <el-color-picker
@@ -172,10 +191,7 @@
                         align="middle"
                       >
                         <el-col>
-                          <el-switch
-                            :value="getControlValue(animateGroupItem, 'enable')"
-                            @change="handleControlChange($event, animateGroupItem, 'animates', 'enable')"
-                          ></el-switch>
+                          <el-switch v-model="animateGroupItem.value.enable"></el-switch>
                         </el-col>
                       </el-row>
                     </template>
@@ -187,9 +203,8 @@
                       >
                         <el-col>
                           <el-switch
-                            :value="getControlValue(animateGroupItem, 'loop')"
-                            :disabled="!getControlValue(animateGroupItem, 'enable')"
-                            @change="handleControlChange($event, animateGroupItem, 'animates', 'loop')"
+                            v-model="animateGroupItem.value.loop"
+                            :disabled="!animateGroupItem.value.enable"
                           ></el-switch>
                         </el-col>
                       </el-row>
@@ -207,9 +222,8 @@
                             :min="0"
                             :max="10"
                             :show-input-controls="false"
-                            :value="getControlValue(animateGroupItem, 'duration')"
-                            :disabled="!getControlValue(animateGroupItem, 'enable')"
-                            @change="handleControlChange($event, animateGroupItem, 'animates', 'duration')"
+                            v-model="animateGroupItem.value.duration"
+                            :disabled="!animateGroupItem.value.enable"
                           >
                           </el-slider>
                         </el-col>
@@ -228,9 +242,8 @@
                             :min="0"
                             :max="10"
                             :show-input-controls="false"
-                            :value="getControlValue(animateGroupItem, 'delay')"
-                            :disabled="!getControlValue(animateGroupItem, 'enable')"
-                            @change="handleControlChange($event, animateGroupItem, 'animates', 'delay')"
+                            v-model="animateGroupItem.value.delay"
+                            :disabled="!animateGroupItem.value.enable"
                           >
                           </el-slider>
                         </el-col>
@@ -246,9 +259,8 @@
                           <el-select
                             placeholder="请选择"
                             size="small"
-                            :value="getControlValue(animateGroupItem, 'name')"
-                            :disabled="!getControlValue(animateGroupItem, 'enable')"
-                            @change="handleControlChange($event, animateGroupItem, 'animates', 'name')"
+                            v-model="animateGroupItem.value.name"
+                            :disabled="!animateGroupItem.value.enable"
                           >
                             <el-option-group
                               v-for="group in animateGroups"
@@ -277,9 +289,8 @@
                           <el-select
                             placeholder="请选择"
                             size="small"
-                            :value="getControlValue(animateGroupItem, 'direction')"
-                            :disabled="!getControlValue(animateGroupItem, 'enable')"
-                            @change="handleControlChange($event, animateGroupItem, 'animates', 'direction')"
+                            v-model="animateGroupItem.value.direction"
+                            :disabled="!animateGroupItem.value.enable"
                           >
                             <el-option-group>
                               <el-option
@@ -313,9 +324,8 @@
                           <el-select
                             placeholder="请选择"
                             size="small"
-                            :value="getControlValue(animateGroupItem, 'mode')"
-                            :disabled="!getControlValue(animateGroupItem, 'enable')"
-                            @change="handleControlChange($event, animateGroupItem, 'animates', 'mode')"
+                            v-model="animateGroupItem.value.mode"
+                            :disabled="!animateGroupItem.value.enable"
                           >
                             <el-option-group>
                               <el-option

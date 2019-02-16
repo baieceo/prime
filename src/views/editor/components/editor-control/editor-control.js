@@ -402,20 +402,11 @@ export default {
         }
       }
 
-      if (key === 'duration') {
-        // debugger
-        // console.log('getControlValue', key, value)
-      }
-
       return value
     },
     handleControlChange (ev, item, type, key) {
       let value = ev.target ? ev.target.value : ev
 
-      if (key === 'duration') {
-        // console.log('handleControlChange', item, key, value)
-      }
-      // debugger
       if (type === 'animates') {
         if (item.value === null) {
           item.value = {}

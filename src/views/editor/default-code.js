@@ -13,9 +13,7 @@ const code = `<template>
     {{ message }}
 
     <div class="mian-components">
-        <component v-for="(item, index) of components" :key="index" is="i-container" :id="item.id">
-            <component :is="item.name" :data="item.data"></component>
-        </component>
+        <component v-for="(item, index) of components" :key="index" is="i-component" :id="item.id" :name="item.name" :data="item.data"></component>
     </div>
   </div>
 </template>
@@ -46,8 +44,9 @@ export default {
                         animates: {
                             list: {
                                 value: {
-                                    enable: false,
-                                    duration: 0
+                                    enable: true,
+                                    duration: 5,
+                                    name: 'bounceInLeft'
                                 }
                             }
                         }

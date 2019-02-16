@@ -1,15 +1,15 @@
 (function () {
-  const componentName = 'i-container'
+  const componentName = 'i-component'
 
   /* 定义 css */
   const css = `
-    .i-component-container {
+    .i-component {
       &:hover {
         position: relative;
         z-index: 1;
         box-shadow: 0 0 0 1px #08ce96;
 
-        .i-component-container-operation {
+        .i-component-operation {
           display: block;
         }
 
@@ -71,35 +71,39 @@
   `
   /* 定义 html */
   const html = `
-    <div class="i-component-container" :id="this.id">
-      <div class="i-component-container-operation">
+    <div class="i-component" :id="this.id">
+      <div class="i-component-operation">
         <a
           href="javascript:;"
-          class="i-component-container-setting el-icon-setting"
+          class="i-component-setting el-icon-setting"
           title="设置"
           @click="handleSetting"
         ></a>
         <a
           href="javascript:;"
-          class="i-component-container-moveup el-icon-sort-up"
+          class="i-component-moveup el-icon-sort-up"
           title="上移"
           @click="handleMove('up')"
         ></a>
         <a
           href="javascript:;"
-          class="i-component-container-movedown el-icon-sort-down"
+          class="i-component-movedown el-icon-sort-down"
           title="下移"
           @click="handleMove('down')"
         ></a>
         <a
           href="javascript:;"
-          class="i-component-container-remove el-icon-delete"
+          class="i-component-remove el-icon-delete"
           title="删除"
           @click="handleRemove"
         ></a>
       </div>
+      
+      <slot name="header"></slot>
 
-      <slot></slot>
+      <component :is="name" :data="data"></component>
+
+      <slot name="footer"></slot>
     </div>
   `
 
@@ -119,6 +123,10 @@
         default () {
           return {}
         }
+      },
+      name: {
+        type: String,
+        default: ''
       }
     },
     data () {
@@ -211,7 +219,14 @@
               component.data[type] &&
               component.data[type][key] !== undefined
             ) {
-              component[type][key].value = component.data[type][key].value
+              if (typeof component.data[type][key].value === 'object') {
+                Object.assign(
+                  component[type][key].value,
+                  component.data[type][key].value
+                )
+              } else {
+                component[type][key].value = component.data[type][key].value
+              }
             }
           }
         })
