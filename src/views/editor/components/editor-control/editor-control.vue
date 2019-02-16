@@ -120,8 +120,7 @@
                       <el-col v-if="styleItem.editor.type === 'color'">
                         <el-color-picker
                           size="small"
-                          :value="styleItem.value"
-                          @change="handleChange($event, styleItem)"
+                          v-model="styleItem.value"
                         ></el-color-picker>
                       </el-col>
                     </el-row>

@@ -153,7 +153,7 @@
   `
   /* 定义 html */
   const html = `
-    <div class="ui" :style="{ 'background-color':  moduleBackgroundColor }">
+    <div class="ui" :style="{ 'background-color':  styles['module-background-color'].value }">
       <div
         class="splash"
         v-if="props.type === 'init'"
@@ -179,6 +179,7 @@
         <el-row
           class="products-header"
           :gutter="20"
+          :style="{ 'background-color': styles['title-background-color'].value }"
         >
           <el-col>最新商品</el-col>
         </el-row>
@@ -251,14 +252,6 @@
     },
     mounted () {
       // console.log(this.props);
-    },
-    computed: {
-      moduleBackgroundColor () {
-        return (
-          this.styles['module-background-color'].value ||
-          this.styles['module-background-color'].default
-        )
-      }
     },
     methods: {
       handleItemClick (item) {

@@ -62,11 +62,21 @@
             styles: {
               'module-background-color': {
                 type: 'String',
-                default: 'red',
+                default: '#FFF',
                 editor: {
-                  label: '背景色', // 属性标签
+                  label: '模块背景', // 属性标签
                   type: 'color', // 属性输入类型
                   desc: '设置模块背景颜色'
+                },
+                value: null // 属性值
+              },
+              'title-background-color': {
+                type: 'String',
+                default: '#F5F5F5',
+                editor: {
+                  label: '标题背景', // 属性标签
+                  type: 'color', // 属性输入类型
+                  desc: '设置标题模块背景颜色'
                 },
                 value: null // 属性值
               }

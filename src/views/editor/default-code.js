@@ -37,7 +37,10 @@ export default {
                         },
                         styles: {
                             'module-background-color': {
-                                value: 'blue'
+                                value: '#F9F9F9'
+                            },
+                            'title-background-color': {
+                                value: '#F0F0F0'
                             }
                         },
                         animates: {

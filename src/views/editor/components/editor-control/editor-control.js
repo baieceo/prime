@@ -339,31 +339,19 @@ export default {
   watch: {
     props: {
       handler (newVal) {
-        this.updateComponentData({
-          id: this.id,
-          data: newVal,
-          type: 'props'
-        })
+        this.updateComponentData('props', newVal)
       },
       deep: true
     },
     styles: {
       handler (newVal) {
-        this.updateComponentData({
-          id: this.id,
-          data: newVal,
-          type: 'styles'
-        })
+        this.updateComponentData('styles', newVal)
       },
       deep: true
     },
     animates: {
       handler (newVal) {
-        this.updateComponentData({
-          id: this.id,
-          data: newVal,
-          type: 'animates'
-        })
+        this.updateComponentData('animates', newVal)
       },
       deep: true
     },
@@ -375,10 +363,14 @@ export default {
     toggleVisible () {
       this.$emit('update:visible', !this.visible)
     },
-    updateComponentData (args) {
+    updateComponentData (type, data) {
       this.$parent.sendMessage({
         cmd: 'updateComponentData',
-        params: args
+        params: {
+          id: this.id,
+          type: type,
+          data: data
+        }
       })
     },
     isEmptyJson (json) {
