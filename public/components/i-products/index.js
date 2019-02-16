@@ -7,6 +7,7 @@
         :is="uiComponentName"
         :props="resultData"
         :styles="styles"
+        :animates="animates"
         @action="userOperationCallback"
       ></component>
       <component
@@ -100,11 +101,11 @@
             },
             // 动画
             animates: {
-              list: {
+              'list-item': {
                 type: 'Object',
                 default: {
                   enable: true,
-                  loop: false,
+                  count: '1',
                   duration: 2,
                   delay: 1,
                   name: 'bounce',
@@ -116,7 +117,7 @@
                   type: 'animate', // 属性输入类型
                   default: {
                     enable: false, // 是否启用
-                    loop: false, // 是否循环
+                    count: 1, // 是否循环
                     duration: 0, // 速度
                     delay: 0, // 延迟
                     name: '', // 动画名称

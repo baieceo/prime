@@ -13,7 +13,7 @@ const code = `<template>
     {{ message }}
 
     <div class="mian-components">
-        <component v-for="(item, index) of components" :key="index" is="i-component" :id="item.id" :name="item.name" :data="item.data"></component>
+        <i-component v-for="(item, index) of components" :key="index" :id="item.id" :name="item.name" :data="item.data"></i-component>
     </div>
   </div>
 </template>

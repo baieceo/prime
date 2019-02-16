@@ -167,7 +167,7 @@
                   :key="animateGroupKey + animateGroupIndex + '-' + animateKey + animateIndex"
                 >
                   <div class="editor-control-group__item-head">
-                    <label>{{ { enable: '是否启用', loop: '是否循环', duration: '动画时长', delay: '动画延时', direction: '运动方向', mode: '动画方式', name: '动画名称' }[animateKey] }}</label>
+                    <label>{{ { enable: '是否启用', count: '执行次数', duration: '动画时长', delay: '动画延时', direction: '运动方向', mode: '动画方式', name: '动画名称' }[animateKey] }}</label>
 
                     <el-popover
                       placement="top-start"
@@ -181,7 +181,7 @@
 
                       <div class="editor-control-popover">
                         设置{{ animateGroupItem.editor.label + '动画' }}
-                        {{ { enable: '是否启用', loop: '是否循环', duration: '动画时长', delay: '动画延时', direction: '运动方向', mode: '动画方式', name: '动画名称' }[animateKey] }}</div>
+                        {{ { enable: '是否启用', count: '执行次数', duration: '动画时长', delay: '动画延时', direction: '运动方向', mode: '动画方式', name: '动画名称' }[animateKey] }}</div>
                     </el-popover>
                   </div>
                   <div class="editor-control-group__item-body">
@@ -196,16 +196,29 @@
                       </el-row>
                     </template>
 
-                    <template v-if="animateKey === 'loop'">
+                    <template v-if="animateKey === 'count'">
                       <el-row
                         type="flex"
                         align="middle"
                       >
-                        <el-col>
+                        <el-col :span="10">
                           <el-switch
-                            v-model="animateGroupItem.value.loop"
-                            :disabled="!animateGroupItem.value.enable"
+                            :value="animateGroupItem.value.count"
+                            @change="handleCountChange($event, animateGroupItem)"
+                            active-text="循环"
+                            active-value="infinite"
+                            inactive-value="1"
                           ></el-switch>
+                        </el-col>
+                        <el-col :span="14">
+                          <el-input
+                            class="inline-input"
+                            v-model="animateGroupItem.value.count"
+                            :disabled="!animateGroupItem.value.enable"
+                            placeholder="请输入内容"
+                            size="small"
+                          >
+                            <template slot="append">次</template></el-input>
                         </el-col>
                       </el-row>
                     </template>

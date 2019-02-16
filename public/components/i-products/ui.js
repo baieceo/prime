@@ -197,12 +197,13 @@
             v-for="(item, index) of props.data.list"
             :key="index"
             @click.native="handleItemClick(item)"
+            @hover.native="handleItemHover(item)"
           >
             <span
               class="item-img"
               :style="{ 'background-image': 'url(' + item.img + ')' }"
             ></span>
-            <strong class="item-price"><em>¥</em><i>{{ item.price }}</i></strong>
+            <strong class="item-price" :style="item.style"><em>¥</em><i>{{ item.price }}</i></strong>
             <p class="item-title">{{ item.title }}</p>
           </el-col>
         </el-row>
@@ -260,6 +261,26 @@
           data: item
         })
       }
+    },
+    parseAnimates (animates) {
+      /* animation-name
+
+animation-timing-function
+animation-delay
+animation-iteration-count
+animation-direction*/
+      let propsMap = {
+        duration: 'animation-duration'
+      }
+    },
+    handleItemHover (item) {
+      item.animate = this.animates['list-item']
+
+      item.style = Object.assign(
+        {},
+        item.style,
+        this.parseAnimates(this.animates['list-item'])
+      )
     }
   })
 })()
