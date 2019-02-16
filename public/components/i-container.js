@@ -1,4 +1,6 @@
 (function () {
+  const componentName = 'i-container'
+
   /* 定义 css */
   const css = `
     .i-component-container {
@@ -69,7 +71,7 @@
   `
   /* 定义 html */
   const html = `
-    <div class="i-component-container">
+    <div class="i-component-container" :id="this.id">
       <div class="i-component-container-operation">
         <a
           href="javascript:;"
@@ -105,12 +107,18 @@
   utils.lessRender(css)
 
   /* 定义组件 */
-  Vue.component('i-container', {
+  Vue.component(componentName, {
     template: html,
     props: {
       id: {
         type: String,
         default: utils.randomStr()
+      },
+      data: {
+        type: Object,
+        default () {
+          return {}
+        }
       }
     },
     data () {
@@ -186,10 +194,24 @@
 
           component[type] = data
         }
+      },
+      // 初始化子组件
+      initComponent (component) {
+        let types = ['props', 'styles', 'animates']
+
+        types.forEach(type => {
+          for (let key in component[type]) {
+            if (component[type][key].value === null) {
+              component[type][key].value = component[type][key].default
+            }
+          }
+        })
       }
     },
     mounted () {
       window.addEventListener('message', this.handleMessage)
+
+      this.initComponent(this.$children[0])
     }
   })
 })()

@@ -3,6 +3,10 @@ import Vue from 'vue'
 export default {
   props: {
     id: null,
+    visible: {
+      type: Boolean,
+      default: false
+    },
     props: {
       type: Object,
       default () {
@@ -329,21 +333,59 @@ export default {
             }
           ]
         }
-      ],
-      animateValue: ''
+      ]
     }
   },
   watch: {
     props: {
       handler (newVal) {
-        this.collapsed = newVal && !this.isEmptyJson(newVal)
+        this.updateComponentData({
+          id: this.id,
+          data: newVal,
+          type: 'props'
+        })
       },
       deep: true
+    },
+    styles: {
+      handler (newVal) {
+        this.updateComponentData({
+          id: this.id,
+          data: newVal,
+          type: 'styles'
+        })
+      },
+      deep: true
+    },
+    animates: {
+      handler (newVal) {
+        this.updateComponentData({
+          id: this.id,
+          data: newVal,
+          type: 'animates'
+        })
+      },
+      deep: true
+    },
+    visible (newVal) {
+      this.$emit('update:visible', newVal)
     }
   },
   methods: {
+    toggleVisible () {
+      this.$emit('update:visible', !this.visible)
+    },
+    updateComponentData (args) {
+      this.$parent.sendMessage({
+        cmd: 'updateComponentData',
+        params: args
+      })
+    },
     isEmptyJson (json) {
       return JSON.stringify(json) === '{}'
+    },
+    handleChange (value, item) {
+      item.value = value
     },
     getControlValue (item, key) {
       let value
@@ -369,7 +411,8 @@ export default {
       }
 
       if (key === 'duration') {
-        console.log('getControlValue', key, value)
+        // debugger
+        // console.log('getControlValue', key, value)
       }
 
       return value
@@ -378,9 +421,9 @@ export default {
       let value = ev.target ? ev.target.value : ev
 
       if (key === 'duration') {
-        console.log('handleControlChange', item, key, value)
+        // console.log('handleControlChange', item, key, value)
       }
-
+      // debugger
       if (type === 'animates') {
         if (item.value === null) {
           item.value = {}
@@ -388,6 +431,7 @@ export default {
 
         if (item.value[key] === undefined) {
           Vue.set(item.value, key, value)
+          // debugger
         } else {
           item.value[key] = value
         }

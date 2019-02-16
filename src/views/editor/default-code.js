@@ -11,7 +11,12 @@ const code = `<template>
         </el-row>
     </el-card>
     {{ message }}
-    <i-container id="mR2SxSydSqR363r73i0tiLz51e2Oap6S"><i-products></i-products></i-container>
+
+    <div class="mian-components">
+        <component v-for="(item, index) of components" :key="index" is="i-container" :id="item.id">
+            <component :is="item.name" :data="item.data"></component>
+        </component>
+    </div>
   </div>
 </template>
 
@@ -19,9 +24,23 @@ const code = `<template>
 export default {
     data () {
         return {
-            message: ''
+            message: '',
+            components: [
+                {
+                    id: 'mR2SxSydSqR363r73i0tiLz51e2Oap6S',
+                    name: 'i-products',
+                    data: {
+                        styles: {
+                            'module-background-color': {
+                                value: 'red'
+                            }
+                        }
+                    }
+                }
+            ]
         }
-    }
+    },
+    methods: {}
 }
 </script>
 `

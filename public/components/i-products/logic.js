@@ -53,8 +53,9 @@
     },
     methods: {
       fetchData () {
+        alert(this.props.api.value)
         window
-          .fetch(this.props.api.value || this.props.api.default)
+          .fetch(this.props.api.value)
           .then(res => res.json())
           .then(res => {
             this.action.type = 'loadDataFinish'

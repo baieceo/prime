@@ -3,12 +3,12 @@
 <template>
   <div
     class="editor-control"
-    :class="{ 'editor-control-closed': !collapsed }"
+    :class="{ 'editor-control-closed': !visible }"
   >
     <div
       class="editor-control-trigger"
-      :class="{ 'editor-control-trigger__collapsed': !collapsed }"
-      @click="collapsed = !collapsed"
+      :class="{ 'editor-control-trigger__collapsed': !visible }"
+      @click="toggleVisible"
       v-if="!isEmptyJson(props)"
     ><i class="el-icon el-icon-setting" /></div>
     <div
@@ -58,8 +58,8 @@
                     <el-row>
                       <el-col v-if="propItem.editor.type === 'input'">
                         <el-input
-                          :value="getControlValue(propItem)"
-                          @change.native="handleControlChange($event, propItem, 'props')"
+                          :value="propItem.value"
+                          @change="handleChange($event, propItem)"
                           size="small"
                           placeholder="请输入"
                         ></el-input>
@@ -111,8 +111,8 @@
                     <el-row>
                       <el-col v-if="styleItem.editor.type === 'input'">
                         <el-input
-                          :value="getControlValue(styleItem)"
-                          @change.native="handleControlChange($event, styleItem, 'styles')"
+                          :value="styleItem.value"
+                          @change="handleChange($event, styleItem)"
                           size="small"
                           placeholder="请输入"
                         ></el-input>
@@ -120,8 +120,8 @@
                       <el-col v-if="styleItem.editor.type === 'color'">
                         <el-color-picker
                           size="small"
-                          :value="getControlValue(styleItem)"
-                          @change="handleControlChange($event, styleItem, 'styles')"
+                          :value="styleItem.value"
+                          @change="handleChange($event, styleItem)"
                         ></el-color-picker>
                       </el-col>
                     </el-row>

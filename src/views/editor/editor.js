@@ -108,7 +108,8 @@ export default {
       componentId: null,
       componentProps: {},
       componentStyles: {},
-      componentAnimates: {}
+      componentAnimates: {},
+      editorControlVisible: false
     }
   },
   watch: {
@@ -333,6 +334,8 @@ export default {
       this.componentProps = componentProps
       this.componentStyles = componentStyles
       this.componentAnimates = componentAnimates
+
+      this.editorControlVisible = true
     },
     handleCodeChange () {
       this.dialogVisible = false

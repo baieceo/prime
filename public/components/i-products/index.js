@@ -1,4 +1,6 @@
 (function () {
+  const componentName = 'i-products'
+
   const html = `
     <div class="unit-component">
       <component
@@ -24,8 +26,16 @@
       './components/i-products/logic.js'
     ])
     .then(res => {
-      Vue.component('i-products', {
+      Vue.component(componentName, {
         template: html,
+        props: {
+          data: {
+            type: Object,
+            default () {
+              return {}
+            }
+          }
+        },
         data () {
           return {
             uiComponentName: 'i-products-ui',
@@ -110,11 +120,28 @@
           }
         },
         watch: {
-          animates: {
+          data: {
             handler (newVal, oldVal) {
-              console.log('product.animates', newVal, oldVal)
+              for (let key in newVal) {
+                console.log('data change: ', key, newVal, oldVal)
+
+                if (key === 'props') {
+                  for (let propKey in this.props) {
+                    this.props[propKey].value = newVal.props[propKey].value
+                  }
+                }
+
+                if (key === 'styles') {
+                  for (let styleKey in this.styles) {
+                    this.styles[styleKey].value = newVal.styles[styleKey].value
+                  }
+                }
+
+                console.log(111, newVal)
+              }
             },
-            deep: true
+            deep: true,
+            immediate: true
           }
         },
         methods: {
@@ -127,11 +154,6 @@
 
             if (payload.type === 'error') {
               this.resultData = payload
-
-              /* this.$message.error({
-                customClass: 'el-toast',
-                message: payload.message
-              }) */
             }
           },
           // 初始化完成回调函数
@@ -145,13 +167,15 @@
           userOperationActionCallback (payload) {
             if (payload.type === 'loadDataFinish') {
               // 用户结果数据
-              // console.log('userOperationActionCallback', this.resultData)
-
               this.resultData = Object.assign({}, this.resultData, payload)
             }
           }
         },
-        mounted () {}
+        mounted () {
+          console.log(55555, 'props', this.props)
+          console.log(55555, 'styles', this.styles)
+          console.log(55555, 'animates', this.animates)
+        }
       })
     })
 })()

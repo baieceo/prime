@@ -104,6 +104,7 @@
             :props="componentProps"
             :styles="componentStyles"
             :animates="componentAnimates"
+            :visible.sync="editorControlVisible"
           ></editor-control>
         </div>
       </div>
