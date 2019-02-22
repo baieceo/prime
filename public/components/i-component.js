@@ -208,6 +208,8 @@
         // 组件内部初始化函数，必须存在，每个组件都一致
         let types = ['props', 'styles', 'animates']
 
+        console.log(11111111, component)
+
         types.forEach(type => {
           for (let key in component[type]) {
             if (component[type][key].value === null) {
@@ -234,6 +236,8 @@
     },
     mounted () {
       window.addEventListener('message', this.handleMessage)
+
+      console.log(2222, this)
 
       this.initComponent(this.$children[0])
     }

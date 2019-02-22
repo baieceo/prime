@@ -1,5 +1,4 @@
-import Vue from 'vue'
-
+import JSON3 from 'json3'
 import randomStr from '@/utils/random_str.js'
 import defaultCode from './default-code.js'
 import navMenu from './components/nav-menu'
@@ -230,7 +229,7 @@ export default {
     // 添加组件
     addComponent (componentName) {
       let context = this.parseStrToDom(this.getSource(this.code, 'template'))
-      let container = document.createElement('i-container')
+      let container = document.createElement('i-component')
       let component = document.createElement(componentName)
 
       container.id = randomStr()
@@ -306,6 +305,7 @@ export default {
     },
     // 移除组件
     removeComponentById (id) {
+      // 1. 移除单独在代码中 template 写入的组件
       let context = this.parseStrToDom(this.getSource(this.code, 'template'))
       let target = context.querySelector(`[id="${id}"]`)
 
@@ -318,6 +318,22 @@ export default {
       let template = this.getSource(this.code, 'template')
 
       this.code = this.code.replace(template, this.parseDomToStr(context))
+
+      // 2. 移除在 script 中 components 数组定义的组件
+      let script = this.getSource(this.code, 'script').replace(
+        /export default/,
+        'return'
+      )
+
+      const parseScript = new Function(script)()
+
+      parseScript.data().components = []
+      debugger
+      let code = new Function(
+        `function () { return { ${JSON.stringify(parseScript)} } }`
+      )
+      debugger
+      window.console.log(7777777, code)
 
       this.componentProps = {}
       this.componentStyles = {}
