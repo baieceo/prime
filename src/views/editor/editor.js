@@ -1,4 +1,3 @@
-import JSON3 from 'json3'
 import randomStr from '@/utils/random_str.js'
 import defaultCode from './default-code.js'
 import navMenu from './components/nav-menu'
@@ -13,6 +12,11 @@ import 'codemirror/mode/javascript/javascript'
 // require styles
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/eclipse.css'
+
+const babylon = require('babylon')
+const t = require('@babel/types')
+const generate = require('@babel/generator').default
+const traverse = require('@babel/traverse').default
 
 export default {
   name: 'Editor',
@@ -321,19 +325,29 @@ export default {
 
       // 2. 移除在 script 中 components 数组定义的组件
       let script = this.getSource(this.code, 'script').replace(
-        /export default/,
-        'return'
+        /export default /,
+        'const code ='
       )
 
-      const parseScript = new Function(script)()
+      const ast = babylon.parse(script)
+
+      const output = generate(ast, {}, code)
+
+      console.log(12345, ast)
+
+      const code = ''
+
+      console.log('Output \n', output.code)
+
+      /* const parseScript = new Function(script)()
 
       parseScript.data().components = []
-      debugger
+
       let code = new Function(
         `function () { return { ${JSON.stringify(parseScript)} } }`
       )
-      debugger
-      window.console.log(7777777, code)
+
+      window.console.log(7777777, code) */
 
       this.componentProps = {}
       this.componentStyles = {}
