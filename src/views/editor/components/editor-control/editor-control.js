@@ -372,6 +372,15 @@ export default {
           data: data
         }
       })
+
+      this.$emit('message', {
+        cmd: 'updateComponentData',
+        params: {
+          id: this.id,
+          type: type,
+          data: data
+        }
+      })
     },
     isEmptyJson (json) {
       return JSON.stringify(json) === '{}'

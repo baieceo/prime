@@ -14,7 +14,6 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/eclipse.css'
 
 const babylon = require('babylon')
-const t = require('@babel/types')
 const generate = require('@babel/generator').default
 const traverse = require('@babel/traverse').default
 
@@ -210,6 +209,89 @@ export default {
       this.codeEditorValue = this.code
 
       this.dialogVisible = true
+    },
+    handleControlMessage (message) {
+      switch (message.cmd) {
+        case 'updateComponentData':
+          this.handleUpdateComponentData(message.params)
+          break
+        default:
+          break
+      }
+    },
+    handleUpdateComponentData (data) {
+      // 1 转化成 ast
+      // 2 找到相关组件
+      // 3 修改代码
+      const code = ''
+      let componentId = data.id
+      let componentStatement = null
+      let script = this.getSource(this.code, 'script')
+      let propType = data.type
+      let propData = data.data
+
+      const ast = babylon.parse(script, {
+        sourceType: 'module'
+      })
+
+      traverse(ast, {
+        ObjectProperty (path) {
+          // 找到 components 数组
+          if (path.node.key.name === 'components') {
+            // 查找组件数组
+            path.traverse({
+              ObjectExpression (objectExpression) {
+                // 查找数组项
+                objectExpression.traverse({
+                  Property (property) {
+                    if (property.node.key.name === 'id') {
+                      componentStatement = objectExpression
+                    }
+                  }
+                })
+              }
+            })
+          }
+        }
+      })
+
+      if (componentStatement) {
+        componentStatement.traverse({
+          Property (property) {
+            if (property.node.key.name === 'props') {
+              property.traverse({
+                Property (item) {
+                  let key = item.node.key.name
+
+                  if (key === 'api') {
+                    item.traverse({
+                      Property (prop) {
+                        let propKey = prop.node.key.name
+
+                        if (propKey === 'value') {
+                          console.log(88888888, propData, propKey)
+
+                          /* prop.replaceWithSourceString(
+                            '{value: 123123123}'
+                            // `value: ${propData[key].value}`
+                          ) */
+                        }
+                      }
+                    })
+                  }
+                }
+              })
+            }
+          }
+        })
+      }
+
+      // 生成 code
+      const output = generate(ast, {}, code)
+
+      // console.log('output.code: ', output.code)
+
+      this.code = this.code.replace(script, output.code)
     },
     onCmReady (/* cm */) {},
     onCmFocus (/* cm */) {},

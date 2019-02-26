@@ -105,6 +105,7 @@
             :styles="componentStyles"
             :animates="componentAnimates"
             :visible.sync="editorControlVisible"
+            @message="handleControlMessage"
           ></editor-control>
         </div>
       </div>

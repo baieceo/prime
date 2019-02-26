@@ -171,10 +171,12 @@
           }
         },
         created () {
+          /*
           console.log(55555, 'props', this.props)
           console.log(55555, 'styles', this.styles)
           console.log(55555, 'animates', this.animates)
           console.log(55555, 'data', this.data)
+          */
         }
       })
     })

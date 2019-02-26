@@ -186,6 +186,8 @@
       },
       // 更新子组件属性
       updateComponentData (ev) {
+        // console.log('i-component.updateComponentData', ev)
+
         let id = ev.data.params.id
         let type = ev.data.params.type
         let data = ev.data.params.data
@@ -208,36 +210,38 @@
         // 组件内部初始化函数，必须存在，每个组件都一致
         let types = ['props', 'styles', 'animates']
 
-        console.log(11111111, component)
+        // console.log('i-component.initComponent', component)
 
-        types.forEach(type => {
-          for (let key in component[type]) {
-            if (component[type][key].value === null) {
-              component[type][key].value = component[type][key].default
-            }
+        if (component) {
+          types.forEach(type => {
+            for (let key in component[type]) {
+              if (component[type][key].value === null) {
+                component[type][key].value = component[type][key].default
+              }
 
-            if (
-              component.data &&
-              component.data[type] &&
-              component.data[type][key] !== undefined
-            ) {
-              if (typeof component.data[type][key].value === 'object') {
-                Object.assign(
-                  component[type][key].value,
-                  component.data[type][key].value
-                )
-              } else {
-                component[type][key].value = component.data[type][key].value
+              if (
+                component.data &&
+                component.data[type] &&
+                component.data[type][key] !== undefined
+              ) {
+                if (typeof component.data[type][key].value === 'object') {
+                  Object.assign(
+                    component[type][key].value,
+                    component.data[type][key].value
+                  )
+                } else {
+                  component[type][key].value = component.data[type][key].value
+                }
               }
             }
-          }
-        })
+          })
+        }
       }
     },
     mounted () {
       window.addEventListener('message', this.handleMessage)
 
-      console.log(2222, this)
+      // console.log(2222, this)
 
       this.initComponent(this.$children[0])
     }
