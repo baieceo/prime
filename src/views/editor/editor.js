@@ -324,30 +324,38 @@ export default {
       this.code = this.code.replace(template, this.parseDomToStr(context))
 
       // 2. 移除在 script 中 components 数组定义的组件
-      let script = this.getSource(this.code, 'script').replace(
-        /export default /,
-        'const code ='
-      )
+      let script = this.getSource(this.code, 'script')
 
-      const ast = babylon.parse(script)
+      const ast = babylon.parse(script, {
+        sourceType: 'module'
+      })
 
-      const output = generate(ast, {}, code)
-
-      console.log(12345, ast)
+      traverse(ast, {
+        ObjectProperty (path) {
+          // 找到 components 数组
+          if (path.node.key.name === 'components') {
+            path.traverse({
+              ObjectExpression (p) {
+                // 移除目标 id 数组项
+                if (
+                  p.node.properties.find(
+                    i => i.key.name === 'id' && i.value.value === id
+                  )
+                ) {
+                  p.remove()
+                }
+              }
+            })
+          }
+        }
+      })
 
       const code = ''
 
-      console.log('Output \n', output.code)
+      // 生成 code
+      const output = generate(ast, {}, code)
 
-      /* const parseScript = new Function(script)()
-
-      parseScript.data().components = []
-
-      let code = new Function(
-        `function () { return { ${JSON.stringify(parseScript)} } }`
-      )
-
-      window.console.log(7777777, code) */
+      this.code = this.code.replace(script, output.code)
 
       this.componentProps = {}
       this.componentStyles = {}

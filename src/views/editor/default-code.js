@@ -25,12 +25,40 @@ export default {
             message: '',
             components: [
                 {
-                    id: 'mR2SxSydSqR363r73i0tiLz51e2Oap6S',
+                    id: 'mR2SxSydSqR363r73i0tiLz51e2Oap6S123',
                     name: 'i-products',
                     data: {
                         props: {
                             api: {
                                 value: 'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs?t=1'
+                            }
+                        },
+                        styles: {
+                            'module-background-color': {
+                                value: '#F9F9F9'
+                            },
+                            'title-background-color': {
+                                value: '#F0F0F0'
+                            }
+                        },
+                        animates: {
+                            list: {
+                                value: {
+                                    enable: true,
+                                    duration: 5,
+                                    name: 'bounceInLeft'
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    id: 'mR2SxSydSqR363r73i0tiLz51e2Oap6S',
+                    name: 'i-products',
+                    data: {
+                        props: {
+                            api: {
+                                value: 'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs?t=2'
                             }
                         },
                         styles: {
