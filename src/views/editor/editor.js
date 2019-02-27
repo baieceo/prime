@@ -244,7 +244,10 @@ export default {
                 // 查找数组项
                 objectExpression.traverse({
                   Property (property) {
-                    if (property.node.key.name === 'id') {
+                    if (
+                      property.node.key.name === 'id' &&
+                      property.node.value.value === componentId
+                    ) {
                       componentStatement = objectExpression
                     }
                   }
@@ -263,13 +266,13 @@ export default {
                 Property (item) {
                   let key = item.node.key.name
 
-                  if (key === 'api') {
+                  if (key === 'value') {
                     item.traverse({
                       Property (prop) {
                         let propKey = prop.node.key.name
 
                         if (propKey === 'value') {
-                          console.log(88888888, propData, propKey)
+                          console.log(88888888, propData[key].value)
 
                           /* prop.replaceWithSourceString(
                             '{value: 123123123}'
