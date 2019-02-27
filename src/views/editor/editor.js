@@ -67,6 +67,8 @@ export default {
         }
       })
 
+      debugger
+
       this.codeEditorValue = newVal
     }
   },
@@ -193,17 +195,18 @@ export default {
       })
 
       // 修改节点值
-      // node.replaceWith(t.valueToNode({ key: val }))
-      let count = 1
+      // node.replaceWith(t.valueToNode(value))
+      // path.node.value = t.valueToNode(value)
+      // path.replaceWithSourceString('${value}')
+
       // 4. 查找属性值并修改
       const propValueVisitor = {
         ObjectProperty: {
-          enter (path, state) {
+          enter (path, { key }) {
             const expr = path.node
 
             if (expr.key && expr.key.name && expr.key.name === 'value') {
-              path.node.value = t.valueToNode('11111111')
-              // if (count--) path.replaceWith(t.valueToNode('11111111111'))
+              path.node.value = t.valueToNode(propData[key].value)
             }
           }
         }
@@ -215,9 +218,11 @@ export default {
           enter (path, state) {
             const expr = path.node
 
-            if (expr.key && expr.key.name && expr.key.name === 'api') {
-              path.traverse(propValueVisitor, state)
-            }
+            Object.keys(propData).forEach(key => {
+              if (expr.key && expr.key.name && expr.key.name === key) {
+                path.traverse(propValueVisitor, { key })
+              }
+            })
           }
         }
       }
