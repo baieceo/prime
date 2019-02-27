@@ -164,7 +164,7 @@
 
         window.parent.postMessage(
           {
-            cmd: 'settingComponentById',
+            cmd: 'openControlPanel',
             params: {
               id: this.id,
               props: component.props || {},

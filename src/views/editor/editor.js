@@ -2,6 +2,7 @@ import randomStr from '@/utils/random_str.js'
 import defaultCode from './default-code.js'
 import navMenu from './components/nav-menu'
 import editorControl from './components/editor-control'
+import devices from './devices'
 
 // require component
 import { codemirror } from 'vue-codemirror'
@@ -13,7 +14,8 @@ import 'codemirror/mode/javascript/javascript'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/eclipse.css'
 
-const babylon = require('babylon')
+const babylon = require('@babel/parser')
+const t = require('babel-types')
 const generate = require('@babel/generator').default
 const traverse = require('@babel/traverse').default
 
@@ -25,60 +27,6 @@ export default {
     editorControl
   },
   data () {
-    let devices = [
-      {
-        name: 'iPhone X',
-        width: 375,
-        height: 812
-      },
-      {
-        name: 'iPhone 6/7/8 Plus',
-        width: 414,
-        height: 736
-      },
-      {
-        name: 'iPhone 6/7/8',
-        width: 375,
-        height: 667
-      },
-      {
-        name: 'iPhone 5/SE',
-        width: 320,
-        height: 568
-      },
-      {
-        name: 'iPad Pro',
-        width: 1024,
-        height: 1366
-      },
-      {
-        name: 'iPad',
-        width: 768,
-        height: 1024
-      },
-      {
-        name: 'Pixel 2 XL',
-        width: 411,
-        height: 823
-      },
-      {
-        name: 'Pixel 2',
-        width: 411,
-        height: 731
-      },
-      {
-        name: 'Galaxy S5',
-        width: 360,
-        height: 640
-      },
-      {
-        name: '自定义',
-        custom: true,
-        width: 414,
-        height: 736
-      }
-    ]
-
     return {
       dialogVisible: false,
       code: '',
@@ -90,18 +38,6 @@ export default {
         lineNumbers: true,
         line: true
       },
-      unitComponents: [
-        {
-          name: '商品列表',
-          id: 'unit1',
-          type: 'list',
-          uiComponent: {
-            name: '商品列表',
-            style: ''
-          },
-          logicComponent: '交互组件名称'
-        }
-      ],
       device: devices[0],
       devices: devices,
       visualDeviceSrc: './visual-device.html',
@@ -136,7 +72,6 @@ export default {
   },
 
   created () {
-    // 接受父页面发来的信息
     window.addEventListener('message', this.handleMessage)
   },
 
@@ -161,12 +96,22 @@ export default {
     }
   },
   methods: {
+    handleClose () {
+      this.dialogVisible = false
+    },
+    handleOpenCodeEditor () {
+      this.codeEditorValue = this.code
+
+      this.dialogVisible = true
+    },
     sendMessage (...args) {
       // 外部 vue 向 iframe 内部传数据
       this.visualDeviceWin.postMessage(...args, '*')
     },
     handleMessage (event) {
-      var data = event.data
+      if (!event.data || !event.data.cmd) return false
+
+      let data = event.data
 
       switch (data.cmd) {
         case 'moveComponentById':
@@ -189,46 +134,35 @@ export default {
             })
             .catch(() => {})
           break
-        case 'settingComponentById':
+        case 'openControlPanel':
           // 设置组件
-          this.settingComponentById(
+          this.openControlPanel(
             event.data.params.id,
             event.data.params.props,
             event.data.params.styles,
             event.data.params.animates
           )
           break
-        default:
-          break
-      }
-    },
-    handleClose () {
-      this.dialogVisible = false
-    },
-    handleOpenCodeEditor () {
-      this.codeEditorValue = this.code
-
-      this.dialogVisible = true
-    },
-    handleControlMessage (message) {
-      switch (message.cmd) {
         case 'updateComponentData':
-          this.handleUpdateComponentData(message.params)
+          this.handleUpdateComponentData(
+            event.data.params.id,
+            event.data.params.type,
+            event.data.params.data
+          )
           break
         default:
           break
       }
     },
-    handleUpdateComponentData (data) {
+    handleUpdateComponentData (componentId, propType, propData) {
       // 1 转化成 ast
       // 2 找到相关组件
       // 3 修改代码
       const code = ''
-      let componentId = data.id
+
       let componentStatement = null
+
       let script = this.getSource(this.code, 'script')
-      let propType = data.type
-      let propData = data.data
 
       const ast = babylon.parse(script, {
         sourceType: 'module'
@@ -258,32 +192,66 @@ export default {
         }
       })
 
+      // 修改节点值
+      // node.replaceWith(t.valueToNode({ key: val }))
+      let count = 1
+      // 4. 查找属性值并修改
+      const propValueVisitor = {
+        ObjectProperty: {
+          enter (path, state) {
+            const expr = path.node
+
+            if (expr.key && expr.key.name && expr.key.name === 'value') {
+              path.node.value = t.valueToNode('11111111')
+              // if (count--) path.replaceWith(t.valueToNode('11111111111'))
+            }
+          }
+        }
+      }
+
+      // 3. 查找属性项
+      const propItemVisitor = {
+        ObjectProperty: {
+          enter (path, state) {
+            const expr = path.node
+
+            if (expr.key && expr.key.name && expr.key.name === 'api') {
+              path.traverse(propValueVisitor, state)
+            }
+          }
+        }
+      }
+
+      // 2. 查找数据类型
+      const propTypeVisitor = {
+        ObjectProperty: {
+          enter (path, state) {
+            const expr = path.node
+
+            if (expr.key && expr.key.name === propType) {
+              path.traverse(propItemVisitor, state)
+            }
+          }
+        }
+      }
+
+      // 1. 查找组件 data 属性
       if (componentStatement) {
         componentStatement.traverse({
-          Property (property) {
-            if (property.node.key.name === 'props') {
-              property.traverse({
-                Property (item) {
-                  let key = item.node.key.name
+          ObjectExpression: {
+            // 修改属性
+            enter (path, state) {
+              const expr = path.parentPath.node
+              const dataExpr =
+                expr.key &&
+                expr.key.name === 'data' &&
+                path.parentPath.parent.properties.find(
+                  item => item.key.name === 'id'
+                )
 
-                  if (key === 'value') {
-                    item.traverse({
-                      Property (prop) {
-                        let propKey = prop.node.key.name
-
-                        if (propKey === 'value') {
-                          console.log(88888888, propData[key].value)
-
-                          /* prop.replaceWithSourceString(
-                            '{value: 123123123}'
-                            // `value: ${propData[key].value}`
-                          ) */
-                        }
-                      }
-                    })
-                  }
-                }
-              })
+              if (dataExpr) {
+                path.traverse(propTypeVisitor, state)
+              }
             }
           }
         })
@@ -293,8 +261,9 @@ export default {
       const output = generate(ast, {}, code)
 
       // console.log('output.code: ', output.code)
+      let outputCode = this.code.replace(script, output.code)
 
-      this.code = this.code.replace(script, output.code)
+      this.code = outputCode
     },
     onCmReady (/* cm */) {},
     onCmFocus (/* cm */) {},
@@ -447,7 +416,7 @@ export default {
       this.componentAnimates = {}
     },
     // 设置组件
-    settingComponentById (
+    openControlPanel (
       componentId,
       componentProps,
       componentStyles,

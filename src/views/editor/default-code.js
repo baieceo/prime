@@ -30,7 +30,7 @@ export default {
                     data: {
                         props: {
                             api: {
-                                value: 'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs?t=1'
+                                value: 'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs?t=123'
                             }
                         },
                         styles: {
