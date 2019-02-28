@@ -12,6 +12,8 @@ const code = `<template>
     </el-card>
     {{ message }}
 
+    <component is="i-products" :data="aaa.data"></component>
+
     <div class="mian-components">
         <i-component v-for="(item, index) of components" :key="index" :id="item.id" :name="item.name" :data="item.data"></i-component>
     </div>
@@ -23,10 +25,40 @@ export default {
     data () {
         return {
             message: '',
+            aaa: {
+                id: 'mR2SxSydSqR363r73i0tiLz51e2Oap1',
+                name: 'i-products',
+                version: '0.1.0',
+                data: {
+                    props: {
+                        api: {
+                            value: 'https://www.easy-mock.com/mock/5c47f3ae9f1c8a370307b142/api/tvs?t=1'
+                        }
+                    },
+                    styles: {
+                        'module-background-color': {
+                            value: '#F9F9F9'
+                        },
+                        'title-background-color': {
+                            value: '#F0F0F0'
+                        }
+                    },
+                    animates: {
+                        list: {
+                            value: {
+                                enable: true,
+                                duration: 5,
+                                name: 'bounceInLeft'
+                            }
+                        }
+                    }
+                }
+            },
             components: [
                 {
                     id: 'mR2SxSydSqR363r73i0tiLz51e2Oap6S123',
                     name: 'i-products',
+                    version: '0.1.0',
                     data: {
                         props: {
                             api: {

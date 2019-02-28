@@ -53,10 +53,9 @@
             },
             // 数据载体
             payloadData: {},
-
-            id: 'truck/prodcuts1',
-            type: 'truck/product',
             label: '商品列表',
+            type: 'truck/product',
+            name: 'i-product',
             version: '0.1.0',
             visible: true,
             // 样式配置，提供给控制面板及 ui 组件

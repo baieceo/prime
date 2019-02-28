@@ -13,6 +13,7 @@ import 'codemirror/mode/javascript/javascript'
 // require styles
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/eclipse.css'
+import { isTerminatorless } from '@babel/types'
 
 const babylon = require('@babel/parser')
 const t = require('babel-types')
@@ -67,7 +68,7 @@ export default {
         }
       })
 
-      debugger
+      // debugger
 
       this.codeEditorValue = newVal
     }
@@ -104,7 +105,17 @@ export default {
     handleOpenCodeEditor () {
       this.codeEditorValue = this.code
 
-      this.dialogVisible = true
+      let delay = 0
+
+      if (this.editorControlVisible === true) {
+        delay = 300
+
+        this.editorControlVisible = false
+      }
+
+      setTimeout(() => {
+        this.dialogVisible = true
+      }, delay)
     },
     sendMessage (...args) {
       // 外部 vue 向 iframe 内部传数据
@@ -157,9 +168,6 @@ export default {
       }
     },
     handleUpdateComponentData (componentId, propType, propData) {
-      // 1 转化成 ast
-      // 2 找到相关组件
-      // 3 修改代码
       const code = ''
 
       let componentStatement = null
@@ -170,36 +178,37 @@ export default {
         sourceType: 'module'
       })
 
+      // 1. 查找组件项，组件同时包含 id、name、data、version 属性
+      //
       traverse(ast, {
         ObjectProperty (path) {
-          // 找到 components 数组
-          if (path.node.key.name === 'components') {
-            // 查找组件数组
-            path.traverse({
-              ObjectExpression (objectExpression) {
-                // 查找数组项
-                objectExpression.traverse({
-                  Property (property) {
-                    if (
-                      property.node.key.name === 'id' &&
-                      property.node.value.value === componentId
-                    ) {
-                      componentStatement = objectExpression
-                    }
-                  }
-                })
-              }
-            })
+          if (
+            path.parentPath.node.properties.find(
+              item => item.key.name === 'id'
+            ) &&
+            path.parentPath.node.properties.find(
+              item => item.key.name === 'name'
+            ) &&
+            path.parentPath.node.properties.find(
+              item => item.key.name === 'data'
+            ) &&
+            path.parentPath.node.properties.find(
+              item => item.key.name === 'version'
+            ) &&
+            path.parentPath.node.properties.find(
+              item => item.key.name === 'id' && item.value.value === componentId
+            )
+          ) {
+            componentStatement = path.parentPath
           }
         }
       })
 
+      // 5. 查找属性值并修改
       // 修改节点值
       // node.replaceWith(t.valueToNode(value))
       // path.node.value = t.valueToNode(value)
       // path.replaceWithSourceString('${value}')
-
-      // 4. 查找属性值并修改
       const propValueVisitor = {
         ObjectProperty: {
           enter (path, { key }) {
@@ -212,7 +221,7 @@ export default {
         }
       }
 
-      // 3. 查找属性项
+      // 4. 查找属性项
       const propItemVisitor = {
         ObjectProperty: {
           enter (path, state) {
@@ -227,7 +236,7 @@ export default {
         }
       }
 
-      // 2. 查找数据类型
+      // 3. 查找数据类型
       const propTypeVisitor = {
         ObjectProperty: {
           enter (path, state) {
@@ -240,7 +249,7 @@ export default {
         }
       }
 
-      // 1. 查找组件 data 属性
+      // 2. 查找组件 data 属性
       if (componentStatement) {
         componentStatement.traverse({
           ObjectExpression: {
