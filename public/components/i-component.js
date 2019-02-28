@@ -241,7 +241,7 @@
     mounted () {
       window.addEventListener('message', this.handleMessage)
 
-      // console.log(2222, this)
+      // console.log('i-component.mounted', this)
 
       this.initComponent(this.$children[0])
     }

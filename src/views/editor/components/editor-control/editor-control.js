@@ -85,6 +85,9 @@ export default {
     },
     handleChange (value, item) {
       item.value = value
+    },
+    handleCountChange (event, animateGroupItem) {
+      console.log(event, animateGroupItem)
     }
   }
 }

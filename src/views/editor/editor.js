@@ -345,37 +345,66 @@ export default {
       return obj.previousElementSibling || obj.previousSibling
     },
     // 移动组件
-    moveComponentById (id, direction) {
-      let context = this.parseStrToDom(this.getSource(this.code, 'template'))
-      let target = context.querySelector(`[id="${id}"]`)
+    moveComponentById (componentId, direction) {
+      const me = this
 
-      if (target) {
-        if (direction === 'up') {
-          let prev = this.prevSibling(target)
+      let script = this.getSource(this.code, 'script')
 
-          if (prev) {
-            context.insertBefore(target, prev)
+      const ast = babylon.parse(script, {
+        sourceType: 'module'
+      })
+
+      traverse(ast, {
+        ObjectExpression (path) {
+          // 暂时只支持删除在 components 数组内的组件
+          // components 数组没定义的组件暂时无法删除，因需要修改 template 删除对应组件 html，此部分功能暂时没开发
+          if (
+            me.pathIsComponentById(path, componentId) &&
+            path.parentPath.node &&
+            path.parentPath.node.elements
+          ) {
+            let componentIndex = null
+
+            // 查找组件索引
+            path.parentPath.node.elements.find(item => {
+              item.properties.find((nodeItem, nodeIndex) => {
+                if (
+                  nodeItem.key &&
+                  nodeItem.key.name &&
+                  nodeItem.key.name === 'id' &&
+                  nodeItem.value &&
+                  nodeItem.value.value === componentId
+                ) {
+                  componentIndex = nodeIndex
+                }
+              })
+            })
+
+            debugger
+
+            console.log(
+              componentIndex,
+              path.container[componentIndex + 1],
+              direction
+            )
+
+            if (
+              componentIndex !== null &&
+              path.container[componentIndex + 1] &&
+              direction === 'down'
+            ) {
+              // path.insertAfter(path.container[componentIndex + 1])
+            }
           }
-
-          prev = null
         }
+      })
 
-        if (direction === 'down') {
-          let next = this.nextSibling(target)
+      const code = ''
 
-          if (next) {
-            context.insertBefore(next, target)
-          }
+      // 生成 code
+      const output = generate(ast, {}, code)
 
-          next = null
-        }
-
-        target = null
-      }
-
-      let template = this.getSource(this.code, 'template')
-
-      this.code = this.code.replace(template, this.parseDomToStr(context))
+      this.code = this.code.replace(script, output.code)
     },
     // 移除组件
     removeComponentById (componentId) {
