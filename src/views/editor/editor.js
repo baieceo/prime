@@ -167,8 +167,20 @@ export default {
           break
       }
     },
+    pathIsComponentById (path, componentId) {
+      return !!(
+        path.node.properties.find(item => item.key.name === 'id') &&
+        path.node.properties.find(item => item.key.name === 'name') &&
+        path.node.properties.find(item => item.key.name === 'data') &&
+        path.node.properties.find(item => item.key.name === 'version') &&
+        path.node.properties.find(
+          item => item.key.name === 'id' && item.value.value === componentId
+        )
+      )
+    },
     handleUpdateComponentData (componentId, propType, propData) {
       const code = ''
+      const me = this
 
       let componentStatement = null
 
@@ -179,26 +191,9 @@ export default {
       })
 
       // 1. 查找组件项，组件同时包含 id、name、data、version 属性
-      //
       traverse(ast, {
         ObjectProperty (path) {
-          if (
-            path.parentPath.node.properties.find(
-              item => item.key.name === 'id'
-            ) &&
-            path.parentPath.node.properties.find(
-              item => item.key.name === 'name'
-            ) &&
-            path.parentPath.node.properties.find(
-              item => item.key.name === 'data'
-            ) &&
-            path.parentPath.node.properties.find(
-              item => item.key.name === 'version'
-            ) &&
-            path.parentPath.node.properties.find(
-              item => item.key.name === 'id' && item.value.value === componentId
-            )
-          ) {
+          if (me.pathIsComponentById(path.parentPath, componentId)) {
             componentStatement = path.parentPath
           }
         }
@@ -274,10 +269,7 @@ export default {
       // 生成 code
       const output = generate(ast, {}, code)
 
-      // console.log('output.code: ', output.code)
-      let outputCode = this.code.replace(script, output.code)
-
-      this.code = outputCode
+      this.code = this.code.replace(script, output.code)
     },
     onCmReady (/* cm */) {},
     onCmFocus (/* cm */) {},
@@ -376,22 +368,9 @@ export default {
       this.code = this.code.replace(template, this.parseDomToStr(context))
     },
     // 移除组件
-    removeComponentById (id) {
-      // 1. 移除单独在代码中 template 写入的组件
-      let context = this.parseStrToDom(this.getSource(this.code, 'template'))
-      let target = context.querySelector(`[id="${id}"]`)
+    removeComponentById (componentId) {
+      const me = this
 
-      if (target) {
-        target.parentNode.removeChild(target)
-
-        target = null
-      }
-
-      let template = this.getSource(this.code, 'template')
-
-      this.code = this.code.replace(template, this.parseDomToStr(context))
-
-      // 2. 移除在 script 中 components 数组定义的组件
       let script = this.getSource(this.code, 'script')
 
       const ast = babylon.parse(script, {
@@ -399,21 +378,11 @@ export default {
       })
 
       traverse(ast, {
-        ObjectProperty (path) {
-          // 找到 components 数组
-          if (path.node.key.name === 'components') {
-            path.traverse({
-              ObjectExpression (p) {
-                // 移除目标 id 数组项
-                if (
-                  p.node.properties.find(
-                    i => i.key.name === 'id' && i.value.value === id
-                  )
-                ) {
-                  p.remove()
-                }
-              }
-            })
+        ObjectExpression (path) {
+          // 暂时只支持删除在 components 数组内的组件
+          // components 数组没定义的组件暂时无法删除，因需要修改 template 删除对应组件 html，此部分功能暂时没开发
+          if (me.pathIsComponentById(path, componentId)) {
+            path.remove()
           }
         }
       })

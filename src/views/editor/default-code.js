@@ -12,7 +12,7 @@ const code = `<template>
     </el-card>
     {{ message }}
 
-    <component is="i-products" :data="aaa.data"></component>
+    <i-component :id="compA.id" :name="compA.name" :data="compA.data"></i-component>
 
     <div class="mian-components">
         <i-component v-for="(item, index) of components" :key="index" :id="item.id" :name="item.name" :data="item.data"></i-component>
@@ -25,7 +25,7 @@ export default {
     data () {
         return {
             message: '',
-            aaa: {
+            compA: {
                 id: 'mR2SxSydSqR363r73i0tiLz51e2Oap1',
                 name: 'i-products',
                 version: '0.1.0',
