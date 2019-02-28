@@ -228,6 +228,16 @@ export default {
               }
             })
           }
+        },
+        // 处理键名为字符的情况
+        StringLiteral: {
+          enter (path, state) {
+            Object.keys(propData).forEach(key => {
+              if (path.key === 'key' && path.node.value === key) {
+                path.parentPath.traverse(propValueVisitor, { key })
+              }
+            })
+          }
         }
       }
 

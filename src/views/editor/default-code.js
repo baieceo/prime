@@ -44,7 +44,7 @@ export default {
                         }
                     },
                     animates: {
-                        list: {
+                        'list-item': {
                             value: {
                                 enable: true,
                                 duration: 5,
@@ -74,7 +74,7 @@ export default {
                             }
                         },
                         animates: {
-                            list: {
+                            'list-item': {
                                 value: {
                                     enable: true,
                                     duration: 5,
