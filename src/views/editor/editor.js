@@ -355,18 +355,30 @@ export default {
       })
 
       traverse(ast, {
-        ObjectExpression (path) {
-          // 暂时只支持删除在 components 数组内的组件
-          // components 数组没定义的组件暂时无法删除，因需要修改 template 删除对应组件 html，此部分功能暂时没开发
-          if (
-            me.pathIsComponentById(path, componentId) &&
-            path.parentPath.node &&
-            path.parentPath.node.elements
-          ) {
-            let componentIndex = null
+        ArrayExpression: {
+          enter (path) {
+            console.log(123, path)
 
-            // 查找组件索引
-            path.parentPath.node.elements.find(item => {
+            // 暂时只支持删除在 components 数组内的组件
+            // components 数组没定义的组件暂时无法删除，因需要修改 template 删除对应组件 html，此部分功能暂时没开发
+            if (
+              me.pathIsComponentById(path, componentId) &&
+              path.parentPath.node &&
+              path.parentPath.node.elements
+            ) {
+              let componentIndex = null
+
+              console.log(
+                path,
+                path.key,
+                path.inList,
+                path.getSibling(path.key + 1)
+              )
+
+              path.insertAfter(path.getSibling(path.key + 1))
+
+              // 查找组件索引
+              /* path.parentPath.node.elements.find(item => {
               item.properties.find((nodeItem, nodeIndex) => {
                 if (
                   nodeItem.key &&
@@ -378,22 +390,25 @@ export default {
                   componentIndex = nodeIndex
                 }
               })
-            })
+            }) */
 
-            debugger
-
-            console.log(
+              /* console.log(
+              path,
               componentIndex,
               path.container[componentIndex + 1],
               direction
-            )
+            ) */
 
-            if (
+              /* if (
               componentIndex !== null &&
               path.container[componentIndex + 1] &&
               direction === 'down'
             ) {
               // path.insertAfter(path.container[componentIndex + 1])
+              // path.replaceWithSourceString('111')
+              console.log(22222, path.container())
+              // path.insertAfter(path.getSibling(1))
+            } */
             }
           }
         }
